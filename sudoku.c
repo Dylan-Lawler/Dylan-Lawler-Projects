@@ -41,22 +41,23 @@ int *number_list();
 int *shuffle_list(int *num_list);
 bool full_board(board_t *board);
 bool check(board_t *board, int num, int row, int column);
-bool make_puzzle(board_t *board);
+bool make_puzzle(board_t *board, int prevrow, int prevcol);
 void print_board(board_t *board);
 void print_help(void *arg, const int key, const int count);
 
 
 int main(int argc, char *argv[]){
     board_t *board = board_new(9);
-    make_puzzle(board);
+    make_puzzle(board, 0, 0);
+    print_board(board);
 }
 
-bool make_puzzle(board_t *board){
+bool make_puzzle(board_t *board, int prevrow, int prevcol){
     int *numbers = number_list();
-    print_board(board);
+    bool stop = true;
     int row; 
     int column;
-    for (row = 0; row < 9; row ++){
+    for (row = 0; (row < 9) && (stop == true); row ++){
         for (column = 0; column < 9; column++){
             if ((get_number(board, row, column)) == 0){
                 for (int num = 0; num < 9; num++){
@@ -64,17 +65,20 @@ bool make_puzzle(board_t *board){
                     int *shuffled = shuffle_list(numbers);
                     if ((check(board, shuffled[num], row, column)) == true){
                         insert_number(board, row, column, shuffled[num]);
-                        if (((full_board(board)) == true) || (make_puzzle(board)) == true){
+                        if (full_board(board)){
                             return true;
                         }
-
+                        if ((make_puzzle(board, row, column)) == true){
+                            return true;
+                        }
                     }
+
                 }
-                break; 
+                stop = false;
             }
         }
     }
-    insert_number(board, row, column, 0);
+    insert_number(board, prevrow, prevcol, 0);
     return false;
 }
 bool check(board_t *board, int num, int row, int column){
