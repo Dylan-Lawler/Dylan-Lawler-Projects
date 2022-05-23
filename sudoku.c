@@ -96,6 +96,7 @@ bool check(board_t *board, int num, int row, int column){
     return true; 
 }
 
+<<<<<<< HEAD
 
 int *number_list(){
     // create a list of possible numbers to insert to puzzle
@@ -130,14 +131,17 @@ void print_help(void *arg, const int key, const int count){
             printf("%d ", count);
     }
 }
+=======
+>>>>>>> d4f0a3c8914b27179a07891141fa98abe81d41af
 
 int *number_list(){
-    srand(time(NULL));
+    // create a list of possible numbers to insert to puzzle
     int *num_list = calloc(9, sizeof(int));
     for (int i = 0; i < 9; i++){
         num_list[i] = i + 1;
     }
 
+    // shuffle the numbers around so we can have a randomized puzzle
     for (int i = 0; i < 9; i++){
         int random = rand() % 9;
         int temp = num_list[i];
@@ -148,14 +152,3 @@ int *number_list(){
     return num_list;
 }
 
-int *shuffle_list(int *num_list){
-    srand(time(NULL));
-    for (int i = 0; i < 9; i++){
-        int random = rand() % 9;
-        int temp = num_list[i];
-        num_list[i] = num_list[random];
-        num_list[random] = temp;
-    }
-
-    return num_list;
-}
