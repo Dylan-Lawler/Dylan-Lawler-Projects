@@ -1,6 +1,6 @@
 # Makefile for 'indexer' program
 #
-# Dylan Lawler, CS50, Spring 2022
+# Team 10 (), CS50, Spring 2022
  
 # executables
 PROG = sudoku
@@ -11,7 +11,7 @@ OBJS = sudoku.o
 
 
 # libraries
-LLIBS = libcs50/libcs50.a
+LLIBS = libcs50/libcs50-given.a
 
 # compilation
 CFLAGS = -Wall -pedantic -std=c11 -ggdb  -I/libcs50
