@@ -54,7 +54,7 @@ The Sudoku solver operates in much the same way as the puzzle generator (which i
     
 4. If no numbers worked, then return `false` to trigger backtracking
 
-It can be seen that the flow of this algorithm follows the same logic as tbe `make_puzzle` function above. We tentatively insert numbers in positions that aren't violating any rules, but we backtrack and try different numbers if this causes problems later on.
+It can be seen that the flow of this algorithm follows the same logic as the `make_puzzle` function above. We tentatively insert numbers in positions that aren't violating any rules, but we backtrack and try different numbers if this causes problems later on.
 
 # Helper functions
 
