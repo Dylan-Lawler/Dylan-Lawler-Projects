@@ -23,7 +23,9 @@ The Sudoku board generator, contained in a function called `make_puzzle`, has a 
 4. Then, loop over all indices in our randomly shuffled candidates list
 
     a. If it wouldn't break Sudoku rules to place the chosen number at the current (`row, col`) position in the board, then insert it
+    
     b. Now recurse: if `make_puzzle(board, row, column+1)` also returns `true`, then return `true`
+    
     c. If the current number doesn't work, then insert a 0 in the current board position
     
 8. If no numbers worked and we exited the above loop, then return `false`
