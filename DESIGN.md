@@ -1,8 +1,7 @@
 # Final Project - Sudoku
-# Design spec - Submitted 5/23/2022
-#
-# Team 10 - Alex Jones, Jordan Kirkbride, Dylan Lawler, Eric Leung
-# CS50, Spring 2022
+## Design spec - Submitted 5/23/2022
+### Team 10 - Alex Jones, Jordan Kirkbride, Dylan Lawler, Eric Leung
+### CS50, Spring 2022
 
 # Overview
 The design for Sudoku is based on notes from IMPLEMENTATION.md, lecture notes, 
