@@ -17,13 +17,13 @@ The purpose of the Sudoku generator is to create a Sudoku puzzle that follows ea
 ## Pseudocode
 The Sudoku board generator, contained in a function called `make_puzzle`, has a recursive structure and takes a `board` struct, an `int row`, and an `int column` as parameters. It operates as follows:
 
-1. Create a randomly shuffled list containing the numbers $1$ through $9$ exactly once
+1. Create a randomly shuffled list containing the numbers 1 through 9 exactly once
 2. If the board is already full, return `true`
 3. If we have reached the end of a row, move to the next
 4. Then, loop over all indices in our randomly shuffled candidates list
     5. If it wouldn't break Sudoku rules to place the chosen number at the current (`row, col`) position in the board, then insert it
     6. Now recurse: if `make_puzzle(board, row, column+1)` also returns `true`, then return `true`
-    7. If the current number doesn't work, then insert a $0$ in the current board position
+    7. If the current number doesn't work, then insert a 0 in the current board position
 8. If no numbers worked and we exited the above loop, then return `false`
 
 The above pseudocode realizes a backtracking solution to puzzle generation. At first, we tentatively insert a number in a given board position, so long as doing so does not immediately violate Sudoku rules. We then try to insert a number in the position after. However, if we break Sudoku rules in this attempt (i.e. no numbers work), then we return to the previous position and try a different number.
@@ -38,11 +38,11 @@ The Sudoku solver operates in much the same way as the puzzle generator (which i
 
 1. If the board is solved, return `true`
 2. If not, loop over the entire board to check for empty space, and assign `row` and `column` to the coordinates of the first empty space found
-3. Then, loop over all possible number insertions $1$ through $9$
+3. Then, loop over all possible number insertions 1 through 9
     4. If it wouldn't break Sudoku rules to place the current number at the current board position, then insert it
     5. Now recurse: call `solve_puzzle` on the board, with the current row and column as parameters
     6. If the above call returns `true`, then return `true`
-    7. If the current number doesn't work, then insert a $0$ in the board at the current position
+    7. If the current number doesn't work, then insert a 0 in the board at the current position
 8. If no numbers worked, then return `false` to trigger backtracking
 
 It can be seen that the flow of this algorithm follows the same logic as tbe `make_puzzle` function above. We tentatively insert numbers in positions that aren't violating any rules, but we backtrack and try different numbers if this causes problems later on.
