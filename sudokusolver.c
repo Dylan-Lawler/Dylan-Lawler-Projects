@@ -11,13 +11,15 @@
 #include <ctype.h>
 #include <time.h>
 #include "sudoku.h"
+#include "./sudokulib/board.h"
 
-void load_sudoku(FILE *fp);
+board_t *board load_sudoku(FILE *fp);
 void solve_puzzle(board_t *board);
 void delete_puzzle(board_t *board);
 
 int main(int argc, char *argv[]){
     board_t *board = load_sudoku(stdin);
+    print_board(board);
     solve_puzzle(board);
 }
 
@@ -110,7 +112,7 @@ board_t *board load_sudoku(FILE *fp){
 // loop through sudoku to check which values are 0
 // if they are 0, check row, column, and square to see what is allowed
 void solve_puzzle(board_t *board){
-    board_t *board = load_sudoku(stdin);
+    // board_t *board = load_sudoku(stdin);
 }
 
 
