@@ -21,9 +21,11 @@ The Sudoku board generator, contained in a function called `make_puzzle`, has a 
 2. If the board is already full, return `true`
 3. If we have reached the end of a row, move to the next
 4. Then, loop over all indices in our randomly shuffled candidates list
+
     5. If it wouldn't break Sudoku rules to place the chosen number at the current (`row, col`) position in the board, then insert it
     6. Now recurse: if `make_puzzle(board, row, column+1)` also returns `true`, then return `true`
     7. If the current number doesn't work, then insert a 0 in the current board position
+    
 8. If no numbers worked and we exited the above loop, then return `false`
 
 The above pseudocode realizes a backtracking solution to puzzle generation. At first, we tentatively insert a number in a given board position, so long as doing so does not immediately violate Sudoku rules. We then try to insert a number in the position after. However, if we break Sudoku rules in this attempt (i.e. no numbers work), then we return to the previous position and try a different number.
