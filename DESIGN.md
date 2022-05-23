@@ -103,9 +103,9 @@ Returns the square root of the number of rows (== number of columns) in the boar
 
 In the `main` function, the control sequence is as follows:
 
-1. Create a new $9 \times 9$ Sudoku board
+1. Create a new 9x9 Sudoku board
 2. Populate the entire board with valid numerical entries
-3. Delete $40$ of these entries at random
+3. Delete 40 of these entries at random
 4. Print the unsolved board
 5. Solve the puzzle
 6. Print the solved board
