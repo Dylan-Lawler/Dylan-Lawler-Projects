@@ -36,14 +36,14 @@ This part of the module solves a premade Sudoku board. That is, it inserts numbe
 ## Pseudocode
 The Sudoku solver operates in much the same way as the puzzle generator (which is to be expected, since the generator is just "solving" and empty puzzle board). It is contained in the `solve_puzzle` function, and takes as parameters a `board`, a `row`, and a `column`. The algorithm flow of the recursive functino is as follows:
 
-    1. If the board is solved, return `true`
-    2. If not, loop over the entire board to check for empty space, and assign `row` and `column` to the coordinates of the first empty space found
-    3. Then, loop over all possible number insertions $1$ through $9$
-        4. If it wouldn't break Sudoku rules to place the current number at the current board position, then insert it
-        5. Now recurse: call `solve_puzzle` on the board, with the current row and column as parameters
-        6. If the above call returns `true`, then return `true`
-        7. If the current number doesn't work, then insert a $0$ in the board at the current position
-    8. If no numbers worked, then return `false` to trigger backtracking
+1. If the board is solved, return `true`
+2. If not, loop over the entire board to check for empty space, and assign `row` and `column` to the coordinates of the first empty space found
+3. Then, loop over all possible number insertions $1$ through $9$
+    4. If it wouldn't break Sudoku rules to place the current number at the current board position, then insert it
+    5. Now recurse: call `solve_puzzle` on the board, with the current row and column as parameters
+    6. If the above call returns `true`, then return `true`
+    7. If the current number doesn't work, then insert a $0$ in the board at the current position
+8. If no numbers worked, then return `false` to trigger backtracking
 
 It can be seen that the flow of this algorithm follows the same logic as tbe `make_puzzle` function above. We tentatively insert numbers in positions that aren't violating any rules, but we backtrack and try different numbers if this causes problems later on.
 
@@ -103,12 +103,12 @@ Returns the square root of the number of rows (== number of columns) in the boar
 
 In the `main` function, the control sequence is as follows:
 
-    1. Create a new $9 \times 9$ Sudoku board
-    2. Populate the entire board with valid numerical entries
-    3. Delete $40$ of these entries at random
-    4. Print the unsolved board
-    5. Solve the puzzle
-    6. Print the solved board
+1. Create a new $9 \times 9$ Sudoku board
+2. Populate the entire board with valid numerical entries
+3. Delete $40$ of these entries at random
+4. Print the unsolved board
+5. Solve the puzzle
+6. Print the solved board
 
 # Major data structures
 
