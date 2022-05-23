@@ -4,10 +4,12 @@
  
 # executables
 PROG = sudoku
+PROG2 = sudokusolver
 
 
 # executables depend on their object files
 OBJS = sudoku.o
+OBJS2 = sudokusolver.o
 
 
 # libraries
@@ -16,12 +18,17 @@ LLIBS = libcs50/libcs50-given.a sudokulib/sudokulib.a
 # compilation
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
 CC = gcc
+MAKE = make
 
+all: sudoku sudokusolver
 
 # make sudoku
-$(PROG): $(OBJS) $(LLIBS)
+sudoku: $(OBJS) $(LLIBS)
 	$(CC) $(CFLAGS) $^ -o $@ 
 
+# solve sudoku
+sudokusolver: $(OBJS2) $(LLIBS)
+	$(CC) $(CFLAGS) $^ -o $@ 
 
 # make libraries
 $(LLIBS):
@@ -35,4 +42,5 @@ clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
+	rm -f $(PROG2)
 	@make -sC /sudokulib clean
