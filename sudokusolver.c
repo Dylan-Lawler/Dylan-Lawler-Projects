@@ -56,6 +56,7 @@ board_t *board load_sudoku(FILE *fp){
                     missingValues++; // incrementing missing values (provided as 0), checking eventually if >= 40 to be valid
                 }
 
+                // check if >8 or >9 is correct
                 if (column > 8 || row > 8){ // if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
                     fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns). Cannot exceed dimensions.\n");
                     delete_puzzle(board);
@@ -79,7 +80,8 @@ board_t *board load_sudoku(FILE *fp){
     }
 
     // is this necessary? do have a row check above when checking for columns too at digit int conversion
-    if (row != 8){ // error checking if sudoku has more than 9 rows
+    // also check if !=9 or != 8 is correct
+    if (row != 9){ // error checking if sudoku has more than 9 rows
         fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns).\n");
         delete_puzzle(board);
         exit(4);
