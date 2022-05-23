@@ -63,6 +63,9 @@ board_t *board load_sudoku(FILE *fp){
                     exit(3);
                 }
             }
+
+            // double check this is the format for sudoku --> like I'm assuming each digit has to have a space but 
+            // is this actually a requirement? may have to add additional insert part if not required to have a space after digit
             else if (isdigit(prevValue) && isspace(currValue)){ // represents a valid digit
                 insert_number(board, row, column, prevValue); // inserting previous value into board
                 column++; // tracking number of columns
@@ -73,7 +76,12 @@ board_t *board load_sudoku(FILE *fp){
         }
         else{ // if at end of row (reading '\n')
             // note: have to check if row++ fits here as not sure if I increment it too much here
-            row++; // incrementing row
+            
+            // see if ==9 or == 8
+            if (column == 9){ // also gotta check --> what specifically is the provided input sudoku? 
+            // like I don't want to increment row if it's just a line of "----------" for instance
+                row++; // incrementing row
+            }
             prevValue = '\0'; // resetting prevValue to '\0'
             column = 0; // resetting column to 0
         }
