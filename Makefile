@@ -20,13 +20,13 @@ CC = gcc
 
 # make sudoku
 $(PROG): $(OBJS) $(LLIBS)
-	$(CC) $(CFLAGS) $^ -o $@ 
+	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 
 # make libraries
 $(LLIBS):
-	@make -sC /libcs50
-	@make -sC /sudokulib
+	make -sC libcs50
+	make -sC sudokulib
 
 PHONY:  clean
 
@@ -35,4 +35,4 @@ clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
-	@make -sC /sudokulib clean
+	make -sC sudokulib clean

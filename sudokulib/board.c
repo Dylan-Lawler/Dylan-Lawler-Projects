@@ -33,6 +33,18 @@ int get_number(board_t *board, int row, int column){
     return counters_get(board->ptr_array[row], column);
 }
 
+counters_t* get_row(board_t *board, int row){
+    return board->ptr_array[row];
+}
+
+int get_size(board_t *board){
+    return board->num_rows;
+}
+
+int get_box_size(board_t *board){
+    return (int)sqrt(board->num_rows);
+}
+
 void insert_number(board_t *board, int row, int column, int number){
     counters_set(board->ptr_array[row], column, number);
 }
@@ -50,7 +62,7 @@ bool full_board(board_t *board){
 
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
-    if ((key + 1) % (int)sqrt(board->num_rows) == 0 && key != board->num_rows - 1){
+    if ((key + 1) % get_box_size(board) == 0 && key != get_size(board) - 1){
             printf("%d|", count);
     }
     else{
@@ -60,26 +72,17 @@ void print_help(void *arg, const int key, const int count){
 
 void print_board(board_t *board){
     for (int i = 0; i < board->num_rows; i ++){
-        if (((i + 1) % (int)sqrt(board->num_rows) == 0) && i != board->num_rows - 1){
-            counters_iterate(board->ptr_array[i], NULL, print_help);
-            printf("\n-------------------\n");
+        if (((i + 1 )% get_box_size(board) == 0) && i != get_size(board) - 1){
+        counters_iterate(get_row(board, i), board, print_help);
+        printf("\n-----------------\n");
+        continue;
+        }
+    
+    counters_iterate(get_row(board, i), board, print_help);
+    printf("\n");
 
-        }
-        else{
-        counters_iterate(board->ptr_array[i], board, print_help);
-        printf("\n");
-        }
     }
 }
 
-counters_t* get_row(board_t *board, int row){
-    return board->ptr_array[row];
-}
 
-int get_size(board_t *board){
-    return board->num_rows;
-}
 
-int get_box_size(board_t *board){
-    return (int)sqrt(board->num_rows);
-}

@@ -62,15 +62,18 @@ bool make_puzzle(board_t *board, int row, int column){
 // recursively make the puzzle by checking if each cell can hold any number 1-9
 bool solve_puzzle(board_t *board, int row, int column){
     // if the board is full, make puzzle is done
+
     if (full_board(board) == true){
         return true;
     }
 
-
-    // if its the end of the row, go to the next 
-    if (column >= 9 && row < 8){
-        row += 1; 
-        column = 0;
+    for (int i = 0; i < get_size(board); i ++){
+        for (int j = 0; j < get_size(board); j ++){
+            if (counters_get(get_row(board, i), j) == 0){
+                row = i;
+                column = j;
+            }
+        }
     }
 
     // for all possible number insertions
@@ -79,16 +82,11 @@ bool solve_puzzle(board_t *board, int row, int column){
         // if the number doesn't break sudoku rules
         if ((check(board, num, row , column) == true))
         {
-            if (get_number(board, row, column) == 0){
             // insert it
-                insert_number(board, row, column, num);
-            }
+            insert_number(board, row, column, num);
             // go to the next number and do the same
-            if (solve_puzzle(board, row, column+1)){
+            if (solve_puzzle(board, row, column)){
                 return true;
-            }
-            if (get_number(board, row, column) != 0){
-                 return true;
             }
             // if no numbers work, keep deleting until numbers work again
             insert_number(board, row, column, 0);
@@ -155,4 +153,3 @@ int *number_list(){
 
     return num_list;
 }
-
