@@ -11,11 +11,17 @@
 #include <ctype.h>
 #include <time.h>
 #include "sudoku.h"
-#include "./sudokulib/board.h"
+#include "sudokulib/board.h"
 
-board_t *board load_sudoku(FILE *fp);
+typedef struct board {
+    counters_t **ptr_array;       // array of sets
+    int num_rows;              // number of rows in the hashboard
+} board_t;
+
+board_t *load_sudoku(FILE *fp);
 void solve_puzzle(board_t *board);
 void delete_puzzle(board_t *board);
+
 
 int main(int argc, char *argv[]){
     board_t *board = load_sudoku(stdin);
@@ -23,8 +29,7 @@ int main(int argc, char *argv[]){
     solve_puzzle(board);
 }
 
-
-board_t *board load_sudoku(FILE *fp){
+board_t *load_sudoku(FILE *fp){
     board_t *board = board_new(9);
     char currValue;
     char prevValue = '\0';
@@ -46,7 +51,7 @@ board_t *board load_sudoku(FILE *fp){
         }
         if (currValue != "\n") { // if not at end of the row
             if (isdigit(currValue)){
-                if (isdigit(prevValue){ // cannot be possible if 2 digit number in provided board
+                if (isdigit(prevValue)){ // cannot be possible if 2 digit number in provided board
                     fprintf(stderr, "Error: %c%c is not a valid value in the sudoku board. Must be a single digit from 0-9.\n", prevValue, currValue);
                     delete_puzzle(board);
                     exit(2);
@@ -71,9 +76,9 @@ board_t *board load_sudoku(FILE *fp){
             else if (isdigit(prevValue) && isspace(currValue)){ // represents a valid digit
                 insert_number(board, row, column, prevValue); // inserting previous value into board
                 column++; // tracking number of columns
-                valueCount++; // incrementing value count (eventually checking if precisely 40 )
-                }
+                totalValues++; // incrementing value count (eventually checking if precisely 40 )
             }
+            
             prevValue = currValue; // if still in same row, reassigning prevValue to currValue before next read
         }
         else{ // if at end of row (reading '\n')
