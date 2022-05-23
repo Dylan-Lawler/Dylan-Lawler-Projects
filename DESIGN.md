@@ -22,11 +22,11 @@ The Sudoku board generator, contained in a function called `make_puzzle`, has a 
 3. If we have reached the end of a row, move to the next
 4. Then, loop over all indices in our randomly shuffled candidates list
 
-    a. If it wouldn't break Sudoku rules to place the chosen number at the current (`row, col`) position in the board, then insert it
+    5. If it wouldn't break Sudoku rules to place the chosen number at the current (`row, col`) position in the board, then insert it
     
-    b. Now recurse: if `make_puzzle(board, row, column+1)` also returns `true`, then return `true`
+    6. Now recurse: if `make_puzzle(board, row, column+1)` also returns `true`, then return `true`
     
-    c. If the current number doesn't work, then insert a 0 in the current board position
+    7. If the current number doesn't work, then insert a 0 in the current board position
     
 8. If no numbers worked and we exited the above loop, then return `false`
 
@@ -44,10 +44,13 @@ The Sudoku solver operates in much the same way as the puzzle generator (which i
 2. If not, loop over the entire board to check for empty space, and assign `row` and `column` to the coordinates of the first empty space found
 3. Then, loop over all possible number insertions 1 through 9
 
-    a. If it wouldn't break Sudoku rules to place the current number at the current board position, then insert it
-    b. Now recurse: call `solve_puzzle` on the board, with the current row and column as parameters
-    c. If the above call returns `true`, then return `true`
-    d. If the current number doesn't work, then insert a 0 in the board at the current position
+    4. If it wouldn't break Sudoku rules to place the current number at the current board position, then insert it
+    
+    5. Now recurse: call `solve_puzzle` on the board, with the current row and column as parameters
+    
+    6. If the above call returns `true`, then return `true`
+    
+    7. If the current number doesn't work, then insert a 0 in the board at the current position
     
 8. If no numbers worked, then return `false` to trigger backtracking
 
