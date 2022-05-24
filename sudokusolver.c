@@ -73,45 +73,38 @@ board_t *load_sudoku(FILE *fp){
                 }
             }
 
-            // double check this is the format for sudoku --> like I'm assuming each digit has to have a space but 
-            // is this actually a requirement? may have to add additional insert part if not required to have a space after digit
             else if (isdigit(prevValue) && isspace(currValue)){ // represents a valid digit
                 insert_number(board, row, column, prevValue); // inserting previous value into board
                 column++; // tracking number of columns
-                totalValues++; // incrementing value count (eventually checking if precisely 40 )
+                totalValues++; // incrementing value count (eventually checking if precisely 81)
             }
             
             prevValue = currValue; // if still in same row, reassigning prevValue to currValue before next read
         }
         else{ // if at end of row (reading '\n')
-            // note: have to check if row++ fits here as not sure if I increment it too much here
-            // printf("column is: %d\n", column);
-            // see if ==9 or == 8
-            if (column == 9){ // also gotta check --> what specifically is the provided input sudoku? 
-            // like I don't want to increment row if it's just a line of "----------" for instance
+            if (column == 9){ 
                 row++; // incrementing row
-                // printf("row: %d", row);
-            }
-            // printf("row is: %d\n", row);
+            };
             prevValue = '\0'; // resetting prevValue to '\0'
             column = 0; // resetting column to 0
         }
     }
 
-    // is this necessary? do have a row check above when checking for columns too at digit int conversion
-    // also check if !=9 or != 8 is correct
-    // printf("\nrow: %d\n", row);
     if (row != 9){ // error checking if sudoku has more than 9 rows
         fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns).\n");
         delete_puzzle(board);
         exit(4);
     }
+    
+    // error checking if sudoku has less than 40 missing values (0's)
     printf("Missing values: %d\n", missingValues);
     if (missingValues < 40){
         fprintf(stderr, "Error: Provided sudoku puzzle must have at least 40 missing values.\n");
         delete_puzzle(board);
         exit(5);
     }
+
+    // error checking if sudoku does not have exactly 81 total values (including 0's)
     printf("totalValues: %d\n", totalValues);
     if (totalValues != 81){
         fprintf(stderr, "Error: Provided sudoku puzzle must have exactly 81 total values (including 0's).\n");
