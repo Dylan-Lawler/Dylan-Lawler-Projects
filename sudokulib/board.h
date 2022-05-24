@@ -25,3 +25,5 @@ int get_size(board_t *board);
 int get_box_size(board_t *board);
 
 bool check(board_t *board, int num, int row, int column);
+
+void clear_spaces(board_t *board, int spaces);
