@@ -17,7 +17,7 @@ LLIBS = libcs50/libcs50-given.a sudokulib/sudokulib.a
 
 # compilation
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
-CC = gcc
+CC = gcc -lm
 MAKE = make
 
 all: sudoku sudokusolver
