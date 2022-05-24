@@ -14,19 +14,15 @@ int *number_list();
 
 // recursively make the puzzle by checking if each cell can hold any number 1-9
 bool make_puzzle(board_t *board, int row, int column){
-    // shuffled list of numbers 1-9
-    int *nums = number_list();
+    int size = get_size(board);
+    // shuffled list of numbers
+    int *nums = number_list(size);
     // if the board is full, make puzzle is done
-    if (full_board(board) == true){
+    if (full_board(board, &row, &column) == true){
         return true;
     }
-    // if its the end of the row, go to the next 
-    if (column >= 9 && row < 9){
-        row += 1;
-        column = 0;
-    }
     // for all possible number insertions
-    for (int num = 0; num<9; num++)
+    for (int num = 0; num< size; num++)
     {
         // if the number doesn't break sudoku rules
         if (check(board, nums[num], row , column) == true)
@@ -34,7 +30,7 @@ bool make_puzzle(board_t *board, int row, int column){
             // insert it
             insert_number(board, row, column, nums[num]);
             // go to the next number and do the same
-            if (make_puzzle(board, row, column+1)){
+            if (make_puzzle(board, row, column)){
                 return true;
             }
             // if no numbers work, keep deleting until numbers work again

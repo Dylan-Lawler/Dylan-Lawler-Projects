@@ -49,10 +49,12 @@ void insert_number(board_t *board, int row, int column, int number){
     counters_set(board->ptr_array[row], column, number);
 }
 
-bool full_board(board_t *board){
+bool full_board(board_t *board, int *row, int *column){
     for (int i = 0; i < board->num_rows; i ++){
         for (int j = 0; j < board->num_rows; j ++){
             if (counters_get(board->ptr_array[i], j) == 0){
+                *row = i;
+                *column = j;
                 return false;
             }
         }
@@ -62,25 +64,33 @@ bool full_board(board_t *board){
 
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
-    if ((key + 1) % get_box_size(board) == 0 && key != get_size(board) - 1){
-            printf("%d|", count);
+    if (key == 0){
+        printf("| %d ", count);
+    }
+    else if ((key + 1) % get_box_size(board) == 0 ){
+        printf("%d | ", count);
     }
     else{
-            printf("%d ", count);
+        printf("%d ", count);
     }
 }
 
 void print_board(board_t *board){
     for (int i = 0; i < board->num_rows; i ++){
-        if (((i + 1 )% get_box_size(board) == 0) && i != get_size(board) - 1){
-        counters_iterate(get_row(board, i), board, print_help);
-        printf("\n-----------------\n");
-        continue;
+        if (i == 0){
+            printf("-------------------------\n");
+            counters_iterate(get_row(board, i), board, print_help);
+            printf("\n");
         }
-    
-    counters_iterate(get_row(board, i), board, print_help);
-    printf("\n");
-
+        else if (((i + 1 )% get_box_size(board) == 0)){
+            counters_iterate(get_row(board, i), board, print_help);
+            printf("\n-------------------------\n");
+            continue;
+        }
+        else{
+            counters_iterate(get_row(board, i), board, print_help);
+            printf("\n");
+        }
     }
 }
 
