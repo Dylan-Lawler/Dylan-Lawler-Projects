@@ -25,6 +25,8 @@ void delete_puzzle(board_t *board);
 
 int main(int argc, char *argv[]){
     board_t *board = load_sudoku(stdin);
+    printf("\n\n");
+    printf("Loaded board:\n");
     print_board(board);
     solve_puzzle(board);
 }
