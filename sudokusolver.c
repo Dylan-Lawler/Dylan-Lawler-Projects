@@ -39,12 +39,8 @@ board_t *load_sudoku(FILE *fp){
     int missingValues = 0;
     int totalValues = 0;
 
-    // while the current value is not end of file
-    while ((currValue = fgetc(fp)) != EOF){
-        // if (column == 0){
-        //     row++;
-        // }
-        if (isalpha(currValue)){ // not valid if alphabetical character present
+    while ((currValue = fgetc(fp)) != EOF){ // while the current value is not end of file
+        if (isalpha(currValue)){ // erro checking: not valid if alphabetical character present
             fprintf(stderr, "Error: %c is not a valid value in the sudoku board. Cannot have alphabetical characters.\n", currValue);
             delete_puzzle(board);
             exit(1);
@@ -56,29 +52,29 @@ board_t *load_sudoku(FILE *fp){
                     delete_puzzle(board);
                     exit(2);
                 }
+                totalValues++; // incrementing value count (eventually checking if precisely 81)
+                if (totalValues > 81){ // error checking if more than 81 total values
+                    fprintf(stderr, "Error: Provided sudoku puzzle must have exactly 81 total values (including 0's).\n");
+                    delete_puzzle(board);
+                    exit(3);
+                }
                 digit = currValue - '0'; // if not double-digit, convert digit to int
-                // printf("totalValues: %d\n", totalValues);
-                // totalValues++; // incrementing total values, checking eventually if = 81 to be valid
-                // printf("\ncolumn: %d", column);
                 if (digit == 0){
                     missingValues++; // incrementing missing values (provided as 0), checking eventually if >= 40 to be valid
                 }
 
-                // check if >8 or >9 is correct
-                if (column > 9){ // || row > 8){ // if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
-                    
+                // note: row > 9 checker may not be needed
+                if (column > 9 || row > 9){ // error checking: if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
                     fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns). Cannot exceed dimensions.\n");
                     delete_puzzle(board);
-                    exit(3);
+                    exit(4);
                 }
             }
 
             else if (isdigit(prevValue) && isspace(currValue)){ // represents a valid digit
-                insert_number(board, row, column, prevValue); // inserting previous value into board
+                insert_number(board, row, column, digit); // inserting previous value into board
                 column++; // tracking number of columns
-                totalValues++; // incrementing value count (eventually checking if precisely 81)
             }
-            
             prevValue = currValue; // if still in same row, reassigning prevValue to currValue before next read
         }
         else{ // if at end of row (reading '\n')
@@ -89,27 +85,12 @@ board_t *load_sudoku(FILE *fp){
             column = 0; // resetting column to 0
         }
     }
-
-    if (row != 9){ // error checking if sudoku has more than 9 rows
-        fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns).\n");
-        delete_puzzle(board);
-        exit(4);
-    }
     
     // error checking if sudoku has less than 40 missing values (0's)
-    printf("Missing values: %d\n", missingValues);
     if (missingValues < 40){
-        fprintf(stderr, "Error: Provided sudoku puzzle must have at least 40 missing values.\n");
+        fprintf(stderr, "Error: Provided sudoku puzzle must have at least 40 missing values (orovided %d missing values).\n", missingValues);
         delete_puzzle(board);
         exit(5);
-    }
-
-    // error checking if sudoku does not have exactly 81 total values (including 0's)
-    printf("totalValues: %d\n", totalValues);
-    if (totalValues != 81){
-        fprintf(stderr, "Error: Provided sudoku puzzle must have exactly 81 total values (including 0's).\n");
-        delete_puzzle(board);
-        exit(6);
     }
     return board;
 }
