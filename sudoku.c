@@ -31,13 +31,8 @@ bool make_puzzle(board_t *board, int row, int column){
     // shuffled list of numbers
     int *nums = number_list(size);
     // if the board is full, make puzzle is done
-    if (full_board(board) == true){
+    if (full_board(board, &row, &column) == true){
         return true;
-    }
-    // if its the end of the row, go to the next 
-    if (column >= size && row < size){
-        row += 1; 
-        column = 0;
     }
     // for all possible number insertions
     for (int num = 0; num< size; num++)
@@ -48,7 +43,7 @@ bool make_puzzle(board_t *board, int row, int column){
             // insert it
             insert_number(board, row, column, nums[num]);
             // go to the next number and do the same
-            if (make_puzzle(board, row, column+1)){
+            if (make_puzzle(board, row, column)){
                 return true;
             }
             // if no numbers work, keep deleting until numbers work again
@@ -64,20 +59,11 @@ bool make_puzzle(board_t *board, int row, int column){
 bool solve_puzzle(board_t *board, int row, int column){
     // size of row/ column
     int size = get_size(board);
-    // if the board is full, make puzzle is done
-    if (full_board(board) == true){
+    // if the board is full, make puzzle is done, sets row and column to next empty cell otherwise
+    if (full_board(board, &row, &column) == true){
         return true;
     }
-    // find the next empty cell
-    for (int i = 0; i < size; i ++){
-        for (int j = 0; j < size; j ++){
-            if (counters_get(get_row(board, i), j) == 0){
-                row = i;
-                column = j;
-            }
-        }
-    }
-    // for all possible number insertions
+
     for (int num = 1; num <= size; num++)
     {
         // if the number doesn't break sudoku rules

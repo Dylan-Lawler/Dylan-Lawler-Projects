@@ -50,10 +50,12 @@ void insert_number(board_t *board, int row, int column, int number){
     counters_set(board->ptr_array[row], column, number);
 }
 
-bool full_board(board_t *board){
+bool full_board(board_t *board, int *row, int *column){
     for (int i = 0; i < board->num_rows; i ++){
         for (int j = 0; j < board->num_rows; j ++){
             if (counters_get(board->ptr_array[i], j) == 0){
+                *row = i;
+                *column = j;
                 return false;
             }
         }
