@@ -5,6 +5,7 @@
 #include <math.h>
 #include <time.h>
 #include "../libcs50/counters.h"
+#include "../libcs50/file.h"
 
 typedef struct board {
     counters_t **ptr_array;       // array of sets
@@ -62,25 +63,33 @@ bool full_board(board_t *board){
 
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
-    if ((key + 1) % get_box_size(board) == 0 && key != get_size(board) - 1){
-            printf("%d|", count);
+    if (key == 0){
+        printf("| %d ", count);
+    }
+    else if ((key + 1) % get_box_size(board) == 0 ){
+        printf("%d | ", count);
     }
     else{
-            printf("%d ", count);
+        printf("%d ", count);
     }
 }
 
 void print_board(board_t *board){
     for (int i = 0; i < board->num_rows; i ++){
-        if (((i + 1 )% get_box_size(board) == 0) && i != get_size(board) - 1){
-        counters_iterate(get_row(board, i), board, print_help);
-        printf("\n-----------------\n");
-        continue;
+        if (i == 0){
+            printf("-------------------------\n");
+            counters_iterate(get_row(board, i), board, print_help);
+            printf("\n");
         }
-    
-    counters_iterate(get_row(board, i), board, print_help);
-    printf("\n");
-
+        else if (((i + 1 )% get_box_size(board) == 0)){
+            counters_iterate(get_row(board, i), board, print_help);
+            printf("\n-------------------------\n");
+            continue;
+        }
+        else{
+            counters_iterate(get_row(board, i), board, print_help);
+            printf("\n");
+        }
     }
 }
 
