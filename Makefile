@@ -32,8 +32,8 @@ sudokusolver: $(OBJS2) $(LLIBS)
 
 # make libraries
 $(LLIBS):
-	@make -sC /libcs50
-	@make -sC /sudokulib
+	make -sC libcs50
+	make -sC sudokulib
 
 PHONY:  clean
 
@@ -43,4 +43,4 @@ clean:
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
 	rm -f $(PROG2)
-	@make -sC /sudokulib clean
+	make -sC sudokulib clean
