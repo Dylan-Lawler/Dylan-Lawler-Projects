@@ -51,7 +51,7 @@ bool full_board(board_t *board){
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
     if ((key + 1) % (int)sqrt(board->num_rows) == 0 && key != board->num_rows - 1){
-            printf("%d|", count);
+            printf("%d | ", count);
     }
     else{
             printf("%d ", count);

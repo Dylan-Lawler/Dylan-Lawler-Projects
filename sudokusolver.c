@@ -57,14 +57,16 @@ board_t *load_sudoku(FILE *fp){
                     exit(2);
                 }
                 digit = currValue - '0'; // if not double-digit, convert digit to int
-                totalValues++; // incrementing total values, checking eventually if = 81 to be valid
-                // printf("\ncolumn: %d\n", column);
+                // printf("totalValues: %d\n", totalValues);
+                // totalValues++; // incrementing total values, checking eventually if = 81 to be valid
+                // printf("\ncolumn: %d", column);
                 if (digit == 0){
                     missingValues++; // incrementing missing values (provided as 0), checking eventually if >= 40 to be valid
                 }
 
                 // check if >8 or >9 is correct
                 if (column > 9){ // || row > 8){ // if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
+                    
                     fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns). Cannot exceed dimensions.\n");
                     delete_puzzle(board);
                     exit(3);
@@ -83,13 +85,14 @@ board_t *load_sudoku(FILE *fp){
         }
         else{ // if at end of row (reading '\n')
             // note: have to check if row++ fits here as not sure if I increment it too much here
-            printf("column is: %d\n", column);
+            // printf("column is: %d\n", column);
             // see if ==9 or == 8
             if (column == 9){ // also gotta check --> what specifically is the provided input sudoku? 
             // like I don't want to increment row if it's just a line of "----------" for instance
                 row++; // incrementing row
                 // printf("row: %d", row);
             }
+            // printf("row is: %d\n", row);
             prevValue = '\0'; // resetting prevValue to '\0'
             column = 0; // resetting column to 0
         }
@@ -97,17 +100,19 @@ board_t *load_sudoku(FILE *fp){
 
     // is this necessary? do have a row check above when checking for columns too at digit int conversion
     // also check if !=9 or != 8 is correct
-    printf("\nrow: %d\n", row);
-    if (row != 8){ // error checking if sudoku has more than 9 rows
+    // printf("\nrow: %d\n", row);
+    if (row != 9){ // error checking if sudoku has more than 9 rows
         fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns).\n");
         delete_puzzle(board);
         exit(4);
     }
+    printf("Missing values: %d\n", missingValues);
     if (missingValues < 40){
         fprintf(stderr, "Error: Provided sudoku puzzle must have at least 40 missing values.\n");
         delete_puzzle(board);
         exit(5);
     }
+    printf("totalValues: %d\n", totalValues);
     if (totalValues != 81){
         fprintf(stderr, "Error: Provided sudoku puzzle must have exactly 81 total values (including 0's).\n");
         delete_puzzle(board);

@@ -6,7 +6,7 @@
 OBJS = board.o
 LIB = sudokulib.a
 
-CFLAGS = -Wall -pedantic -std=c11 -ggdb 
+CFLAGS = -Wall -pedantic -std=c11 -ggdb
 CC = gcc
 
 # Build the library by archiving object files

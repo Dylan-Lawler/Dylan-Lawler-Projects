@@ -16,19 +16,19 @@ OBJS2 = sudokusolver.o
 LLIBS = libcs50/libcs50-given.a sudokulib/sudokulib.a
 
 # compilation
-CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
-CC = gcc -lm
+CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50 
+CC = gcc
 MAKE = make
 
 all: sudoku sudokusolver
 
 # make sudoku
 sudoku: $(OBJS) $(LLIBS)
-	$(CC) $(CFLAGS) $^ -o $@ 
+	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 # solve sudoku
 sudokusolver: $(OBJS2) $(LLIBS)
-	$(CC) $(CFLAGS) $^ -o $@ 
+	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 # make libraries
 $(LLIBS):
