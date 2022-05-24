@@ -84,5 +84,27 @@ void print_board(board_t *board){
     }
 }
 
+// Check for sudoku rule violations
+bool check(board_t *board, int num, int row, int column){
+    // if the number matches any number in the same row or column, return false
+    for (int i = 0; i < get_size(board); i++){
+        if ((counters_get(get_row(board, row), i) == num) || (counters_get(get_row(board, i), column) == num)){
+            return false;
+        }
+    }
+    // start at the top left corner of the square
+    int boxrow = row - (row % 3);
+    int boxcol = column - (column % 3);
 
+    // if the number matches any number in the square, return false 
+    for (int i = boxrow; i < boxrow + 3; i ++){
+        for (int j = boxcol; j < boxcol + 3; j ++){
+            if (counters_get(get_row(board, i), j) == num){
+                return false;
+            }
+        }
+    }
+    // the number is valid
+    return true;
+}
 

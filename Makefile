@@ -11,7 +11,7 @@ OBJS = sudoku.o
 
 
 # libraries
-LLIBS = libcs50/libcs50-given.a sudokulib/sudokulib.a
+LLIBS = sudokulib/sudokulib.a libcs50/libcs50-given.a
 
 # compilation
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50

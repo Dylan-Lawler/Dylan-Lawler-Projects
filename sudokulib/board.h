@@ -23,3 +23,5 @@ counters_t* get_row(board_t *board, int row);
 int get_size(board_t *board);
 
 int get_box_size(board_t *board);
+
+bool check(board_t *board, int num, int row, int column);
