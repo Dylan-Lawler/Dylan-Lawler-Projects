@@ -38,7 +38,6 @@ board_t *load_sudoku(FILE *fp){
     int digit;
     int row = 0;
     int column = 0;
-    int missingValues = 0;
     int totalValues = 0;
 
     while ((currValue = fgetc(fp)) != EOF){ // while the current value is not end of file
@@ -61,9 +60,6 @@ board_t *load_sudoku(FILE *fp){
                     exit(3);
                 }
                 digit = currValue - '0'; // if not double-digit, convert digit to int
-                if (digit == 0){
-                    missingValues++; // incrementing missing values (provided as 0), checking eventually if >= 40 to be valid
-                }
 
                 // note: row > 9 checker may not be needed
                 if (column > 9 || row > 9){ // error checking: if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
@@ -88,12 +84,6 @@ board_t *load_sudoku(FILE *fp){
         }
     }
     
-    // error checking if sudoku has less than 40 missing values (0's)
-    if (missingValues < 40){
-        fprintf(stderr, "Error: Provided sudoku puzzle must have at least 40 missing values (orovided %d missing values).\n", missingValues);
-        delete_puzzle(board);
-        exit(5);
-    }
     return board;
 }
 
