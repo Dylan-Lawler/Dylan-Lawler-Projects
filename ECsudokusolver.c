@@ -24,14 +24,14 @@ void delete_puzzle(board_t *board, int size);
 
 
 int main(int argc, char *argv[]){
-    board_t *board = load_sudoku(stdin, 16); // make sure size is correct and matches inputted dimensions
+    board_t *board = load_sudoku(stdin, 25); // make sure size is correct and matches inputted dimensions
     printf("\n\n");
     printf("Loaded board:\n");
     print_board(board);
     solve_puzzle(board);
 }
 
-// size --> either 9, 16 (the dimension size of sudoku board)
+// size --> can be 9, 16, 25, etc... (the dimension size of sudoku board)
 board_t *load_sudoku(FILE *fp, int size){
     // checking if invalid sudoku dimensions already
     if (size == 0){
