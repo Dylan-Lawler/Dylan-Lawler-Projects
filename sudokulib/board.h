@@ -14,7 +14,7 @@ int get_number(board_t *board, int row, int column);
 
 void insert_number(board_t *board, int row, int column, int number);
 
-bool full_board(board_t *board);
+bool full_board(board_t *board, int* row, int *column);
 
 void print_board(board_t *board);
 

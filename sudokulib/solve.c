@@ -7,38 +7,30 @@
 #include "board.h"
 
 // recursively make the puzzle by checking if each cell can hold any number 1-9
-bool solve_puzzle(board_t *board, int row, int column){
-    // if the board is full, make puzzle is done
-
-    if (full_board(board) == true){
-        return true;
+int solve_puzzle(board_t *board, int row, int column, int count){
+    // size of row/column
+    int size = get_size(board);
+    // If the board is full, then we're done with this solution
+    // Otherwise, set row and column to next empty cell
+    if (full_board(board, &row, &column)) {
+        // we found a solution, so increment count
+        printf("Found solution!\n");
+        print_board(board);
+        return count+1;
     }
 
-    for (int i = 0; i < get_size(board); i ++){
-        for (int j = 0; j < get_size(board); j ++){
-            if (counters_get(get_row(board, i), j) == 0){
-                row = i;
-                column = j;
-            }
-        }
-    }
-
-    // for all possible number insertions
-    for (int num = 1; num<=9; num++)
+    for (int num = 1; num <= size && count < 2; num++)
     {
         // if the number doesn't break sudoku rules
-        if ((check(board, num, row , column) == true))
+        if ((check(board, num, row , column)))
         {
-            // insert it
+            // insert it to the empty cell
             insert_number(board, row, column, num);
-            // go to the next number and do the same
-            if (solve_puzzle(board, row, column)){
-                return true;
-            }
-            // if no numbers work, keep deleting until numbers work again
-            insert_number(board, row, column, 0);
+            // go to the next empty cell and do the same
+            count = solve_puzzle(board, row, column, count);
         }
     }
     // no numbers worked, backtrack
-    return false;
+    insert_number(board, row, column, 0);
+    return count;
 }
