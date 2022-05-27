@@ -1,4 +1,4 @@
-/* sudokusolver.c - solves a given sudoku puzzle from stdin
+/* ECsudokusolver.c - solves a given sudoku puzzle from stdin
  *
  * Using backtracing to approach solving the sudoku puzzle
  *
