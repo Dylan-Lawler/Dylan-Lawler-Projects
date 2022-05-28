@@ -9,7 +9,6 @@
 // recursively make the puzzle by checking if each cell can hold any number 1-9
 int solve_puzzle(board_t *board, int row, int column, int count){
     // size of row/column
-
     int size = get_size(board);
     // If the board is full, then we're done with this solution
     // Otherwise, set row and column to next empty cell

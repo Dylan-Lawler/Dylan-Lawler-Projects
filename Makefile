@@ -4,11 +4,11 @@
  
 # executables
 PROG = sudoku
-
+FUZZ = fuzz
 
 # executables depend on their object files
 OBJS = sudoku.o
-
+OBJF = fuzztest.o
 
 # libraries
 LLIBS = sudokulib/sudokulib.a libcs50/libcs50-given.a
@@ -17,11 +17,12 @@ LLIBS = sudokulib/sudokulib.a libcs50/libcs50-given.a
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
 CC = gcc
 
-
-# make sudoku
-$(PROG): $(OBJS) $(LLIBS)
+# make sudoku + fuzz
+$(FUZZ): $(OBJF) $(LLIBS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 
+$(PROG): $(OBJS) $(LLIBS)
+	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 # make libraries
 $(LLIBS):
@@ -34,5 +35,5 @@ PHONY:  clean
 clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
-	rm -f $(PROG)
+	rm -f $(PROG) $(FUZZ)
 	make -sC sudokulib clean
