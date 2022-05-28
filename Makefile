@@ -3,6 +3,7 @@
 # Dylan Lawler, CS50, Spring 2022
  
 # executables
+ALL = sudoku fuzz
 PROG = sudoku
 FUZZ = fuzz
 
@@ -17,6 +18,7 @@ LLIBS = sudokulib/sudokulib.a libcs50/libcs50-given.a
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
 CC = gcc
 
+all: $(ALL)
 # make sudoku + fuzz
 $(FUZZ): $(OBJF) $(LLIBS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
