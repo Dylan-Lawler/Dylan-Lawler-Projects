@@ -11,3 +11,5 @@
 bool make_puzzle(board_t *board, int row, int column);
 
 int *number_list();
+
+void clear_spaces(board_t *board, int spaces);

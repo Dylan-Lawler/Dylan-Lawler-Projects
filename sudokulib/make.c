@@ -6,7 +6,7 @@
 #include <math.h>
 #include <time.h>
 #include "../libcs50/counters.h"
-#include "board.h"
+#include "solve.h"
 
 // Local prototypes
 int *number_list();
@@ -38,6 +38,7 @@ bool make_puzzle(board_t *board, int row, int column){
         }
     }
     // no numbers worked, backtrack
+    free(nums);
     return false;
 }
 
@@ -60,3 +61,24 @@ int *number_list(){
     return num_list;
 }
 
+void clear_spaces(board_t *board, int spaces){
+    // keeps track of spaces made empty
+    int cleared = 0;
+    // until the desired amount of spaces are cleared
+    while(cleared < spaces){
+        // find a random cell
+        int row = rand() % 9;
+        int col = rand() % 9;
+        // if its not already emptied, empty it and increment number of empty cells
+        if (get_number(board, row, col) != 0){
+            insert_number(board, row, col, 0);
+            if (solve_puzzle(board, 0, 0, 0) > 1){
+                empty_board(board);
+                make_puzzle(board, 0, 0);
+                cleared = 0;
+                continue;
+            }
+            cleared++;
+        }
+    }
+}
