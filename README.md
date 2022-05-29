@@ -26,6 +26,48 @@ The user will be prompted from the terminal to provide input via stdin to test t
 * sudoku.c
     - compiled file to handle both `create` and `solve` functions of sudoku (corresponding to creating a unique sudoku puzzle and solving any solvable inputted sudoku puzzle respectively)
 
+```bash
+.
+├── DESIGN.md
+├── libcs50
+│   ├── bag.c
+│   ├── bag.h
+│   ├── counters.h
+│   ├── file.c
+│   ├── file.h
+│   ├── file.md
+│   ├── hashtable.h
+│   ├── jhash.c
+│   ├── jhash.h
+│   ├── libcs50.a
+│   ├── libcs50-given.a
+│   ├── Makefile
+│   ├── memory.c
+│   ├── memory.h
+│   ├── memory.md
+│   ├── README.md
+│   ├── set.h
+│   ├── webpage.c
+│   ├── webpage.h
+│   └── webpage.md
+├── Makefile
+├── README.md
+├── sudoku.c
+├── sudokulib
+│   ├── board.c
+│   ├── board.h
+│   ├── make.c
+│   ├── Makefile
+│   ├── make.h
+│   ├── solve.c
+│   ├── solve.h
+│   └── sudokulib.a
+└── testing
+    ├── fuzztest.c
+    ├── Makefile
+    ├── testing.out
+    └── testing.sh
+```
 
 ### Assumptions
 No assumptions beyond those that are clear from the `DESIGN.md`, `IMPLEMENTATION.md`, and class project requirements. 
