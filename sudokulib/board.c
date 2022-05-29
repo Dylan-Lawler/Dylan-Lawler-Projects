@@ -36,8 +36,9 @@ board_t *board_new(const int num_rows){
 }
 
 void delete_puzzle(board_t *board) {
+    int size = get_size(board);
     if (board != NULL) { // if there is something to free
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < size; i++) {
             counters_delete(board->ptr_array[i]); // freeing individual counters
             counters_delete(board->solution[i]);
         }
@@ -231,6 +232,18 @@ void save_solution(board_t *board){
             counters_set(board->solution[i], j, number);
         }
     }
+}
+
+board_t* copy_board(board_t *board){
+    int size = get_size(board);
+    board_t *copy = board_new(size);
+    for (int i = 0; i < size; i ++){
+        for (int j = 0; j < size; j ++){
+            int number = get_number(board, i, j);
+            insert_number(copy, i,j, number);
+        }
+    }
+    return copy;
 }
 
 void print_solution(board_t *board){
