@@ -1,5 +1,7 @@
 # Final Project - Sudoku
 ## CS50 Spring 2022
+
+## README.md for Sudoku
 ## Team 10 (Alex Jones, Jordan Kirkbride, Dylan Lawler, Eric Leung)
 
 ### Sudoku
