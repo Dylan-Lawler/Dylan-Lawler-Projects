@@ -1,6 +1,8 @@
-# Makefile for 'indexer' program
+# Makefile for 'sudoku' program and fuzz tester
 #
-# Dylan Lawler, CS50, Spring 2022
+# Dylan, Jordan, Alex, Eric
+#
+# CS50 Spring '22
  
 # executables
 ALL = sudoku fuzz
@@ -19,6 +21,7 @@ CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
 CC = gcc
 
 all: $(ALL)
+
 # make sudoku + fuzz
 $(FUZZ): $(OBJF) $(LLIBS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
