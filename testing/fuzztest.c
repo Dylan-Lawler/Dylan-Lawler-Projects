@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "sudokulib/board.h"
-#include "sudokulib/make.h"
-#include "sudokulib/solve.h"
+#include "../sudokulib/board.h"
+#include "../sudokulib/make.h"
+#include "../sudokulib/solve.h"
 
 /*
  * fuzztest.c - Fuzz tester for sudoku make and solve modulues
