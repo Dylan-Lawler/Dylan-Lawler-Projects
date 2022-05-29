@@ -31,5 +31,5 @@ PHONY:  clean
 clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
-	rm -f $(PROG) $(FUZZ)
-	make -sC sudokulib clean
+	rm -f $(PROG)
+	make -sC ../sudokulib clean
