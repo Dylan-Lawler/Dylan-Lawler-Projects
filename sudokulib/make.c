@@ -20,6 +20,7 @@ bool make_puzzle(board_t *board, int row, int column){
     int *nums = number_list(size);
     // if the board is full, make puzzle is done
     if (full_board(board, &row, &column) == true){
+        free(nums);
         return true;
     }
     // for all possible number insertions
@@ -32,6 +33,7 @@ bool make_puzzle(board_t *board, int row, int column){
             insert_number(board, row, column, nums[num]);
             // go to the next number and do the same
             if (make_puzzle(board, row, column)){
+                free(nums);
                 return true;
             }
             // if no numbers work, keep deleting until numbers work again
@@ -62,7 +64,6 @@ int *number_list(int size){
 
 void clear_spaces(board_t *board, int spaces){
     int size = get_size(board);
-    printf("%d\n", spaces);
 
     // keeps track of spaces made 
     int *cells = number_list((size * size) - 1);
@@ -75,15 +76,24 @@ void clear_spaces(board_t *board, int spaces){
         int number = get_number(board, row, column);
         insert_number(board, row, column, 0);
         cleared++;
-        if (cleared == spaces){
-           break;
-        }
         board_t *copy = copy_board(board); 
         if ((solve_puzzle(copy, 0, 0,0)) > 1 ){
             insert_number(board, row, column, number);
             cleared --;
-            delete_puzzle(copy);
+        }
+        delete_puzzle(copy);
+        if (cleared == spaces){
+           break;
         }
     }
+
+    if (cleared < spaces){
+            empty_board(board);
+            make_puzzle(board, 0, 0);
+            clear_spaces(board, spaces);
+        }
+    
+    free(cells);
+    printf("%d/%d cleared\n", cleared, spaces);
     // until the desired amount of spaces are cleared 
 }

@@ -44,8 +44,8 @@ void delete_puzzle(board_t *board) {
         }
         free(board->ptr_array); // freeing array of counters
         free(board->solution); // freeing array of counters
-
     }
+    free(board);
 }
 
 int get_number(board_t *board, int row, int column){

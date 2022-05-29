@@ -13,7 +13,7 @@ int main(int argc, char *argv[]){
     srand(time(NULL));
     board_t *board = board_new(9);
     make_puzzle(board, 0, 0);
-    clear_spaces(board, 5);
+    clear_spaces(board, 50);
     print_board(board);
     printf("\n");
     
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     //     printf("Found at least 2 distinct solutions. Here's one of them:\n");
     // }
     // print_solution(board);
-    // delete_puzzle(board);
+    delete_puzzle(board);
 
     // exit(0);
 }
