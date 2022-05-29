@@ -34,7 +34,8 @@ board_t *load_sudoku(FILE *fp);
 
 void save_solution(board_t *board);
 
+board_t *copy_board(board_t *board);
+
 void print_solution(board_t *board);
 
 void empty_board(board_t *board);
-

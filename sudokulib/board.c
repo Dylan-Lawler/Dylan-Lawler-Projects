@@ -16,10 +16,10 @@ typedef struct board {
 
 board_t *board_new(const int num_rows){
     board_t *board = malloc(sizeof(board_t)); 
-    if (board == NULL){
+    if (board == NULL) {
     return NULL;             
     } 
-    else{
+    else {
       board->num_rows = num_rows; 
       board->ptr_array = calloc(board->num_rows, sizeof(counters_t*));
       board->solution = calloc(board->num_rows, sizeof(counters_t*));
@@ -43,8 +43,8 @@ void delete_puzzle(board_t *board) {
         }
         free(board->ptr_array); // freeing array of counters
         free(board->solution); // freeing array of counters
-
     }
+    free(board);
 }
 
 int get_number(board_t *board, int row, int column){
@@ -231,6 +231,18 @@ void save_solution(board_t *board){
             counters_set(board->solution[i], j, number);
         }
     }
+}
+
+board_t* copy_board(board_t *board) {
+    int size = get_size(board);
+    board_t* board_copy = board_new(size);
+    for (int i = 0; i < size; i ++){
+        for (int j = 0; j < size; j ++){
+            int number = get_number(board, i, j);
+            insert_number(board_copy, i, j, number);
+        }
+    }
+    return board_copy;
 }
 
 void print_solution(board_t *board){
