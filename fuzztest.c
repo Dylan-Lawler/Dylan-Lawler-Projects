@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 		printf("\n");
                 printf("SOLVED\n");
 		print_solution(board);
-		
+		delete_puzzle(board);	
 	}		
 	return 0;
 }
