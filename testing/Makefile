@@ -1,4 +1,4 @@
-# Makefile for 'sudoku' program
+# Makefile for fuzz testing
 #
 # Dylan, Jordan, Alex, Eric
 #
