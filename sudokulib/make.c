@@ -15,12 +15,15 @@ int *number_list();
 // recursively make the puzzle by checking if each cell can hold any number 1-9
 bool make_puzzle(board_t *board, int row, int column){
     int size = get_size(board);
+
     // shuffled list of numbers
-    int *nums = number_list(size);
+    int *nums = number_list(size); 
     // if the board is full, make puzzle is done
     if (full_board(board, &row, &column) == true){
-        return true;
+	    free(nums);
+	    return true;
     }
+   
     // for all possible number insertions
     for (int num = 0; num< size; num++)
     {
@@ -29,16 +32,21 @@ bool make_puzzle(board_t *board, int row, int column){
         {
             // insert it
             insert_number(board, row, column, nums[num]);
-            // go to the next number and do the same
-            if (make_puzzle(board, row, column)){
-                return true;
+    
+    	    // go to the next number and do the same
+	    if (make_puzzle(board, row, column)){
+		    free(nums);
+		    return true;
             }
+
             // if no numbers work, keep deleting until numbers work again
             insert_number(board, row, column, 0);
         }
+
     }
-    // no numbers worked, backtrack
+    
     free(nums);
+    // no numbers worked, backtrack
     return false;
 }
 
