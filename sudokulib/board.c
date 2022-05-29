@@ -17,7 +17,8 @@ typedef struct board {
 board_t *board_new(const int num_rows){
     board_t *board = malloc(sizeof(board_t)); 
     if (board == NULL){
-    return NULL;             
+   
+	    return NULL;             
     } 
     else{
       board->num_rows = num_rows; 
@@ -43,7 +44,7 @@ void delete_puzzle(board_t *board) {
         }
         free(board->ptr_array); // freeing array of counters
         free(board->solution); // freeing array of counters
-
+	free(board);
     }
 }
 

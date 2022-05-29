@@ -1,15 +1,14 @@
-# Makefile for 'indexer' program
+# Makefile for 'sudoku' program
 #
-# Dylan Lawler, CS50, Spring 2022
+# Dylan, Jordan, Alex, Eric
+#
+# CS50 Spring '22
  
 # executables
-ALL = sudoku fuzz
 PROG = sudoku
-FUZZ = fuzz
 
 # executables depend on their object files
 OBJS = sudoku.o
-OBJF = fuzztest.o
 
 # libraries
 LLIBS = sudokulib/sudokulib.a libcs50/libcs50-given.a
@@ -17,11 +16,6 @@ LLIBS = sudokulib/sudokulib.a libcs50/libcs50-given.a
 # compilation
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
 CC = gcc
-
-all: $(ALL)
-# make sudoku + fuzz
-$(FUZZ): $(OBJF) $(LLIBS)
-	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 $(PROG): $(OBJS) $(LLIBS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
