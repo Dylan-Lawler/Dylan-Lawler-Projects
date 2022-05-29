@@ -7,16 +7,16 @@
 According to DESIGN.md and requirements outlined by class project specifications, the *sudoku* is a standalone program, where we can invoke our Sudoku program from the command line with one command line argument and usage must be as follows:
 - ./sudoku create to create a random Sudoku puzzle
 - ./sudoku solve to solve a given Sudoku puzzle
-Sudoku creator must satisfy the following requirements:
-- Create a puzzle that has a unique solution
-- There must be at least 40 missing numbers in the generated puzzle
-- The puzzle must be randomized
-- The puzzle is printed to stdout
-Sudoku solver must satisfy the following requirements:
-- Be able to accept puzzles that have multiple solutions
-- Generate any one possible solution for the given puzzle
-- Must not change any given numbers in the puzzle
-- Should read the puzzle from stdin and print the solution to stdout.
+* Sudoku creator must satisfy the following requirements:
+    - Create a puzzle that has a unique solution
+    - There must be at least 40 missing numbers in the generated puzzle
+    - The puzzle must be randomized
+    - The puzzle is printed to stdout
+* Sudoku solver must satisfy the following requirements:
+    - Be able to accept puzzles that have multiple solutions
+    - Generate any one possible solution for the given puzzle
+    - Must not change any given numbers in the puzzle
+    - Should read the puzzle from stdin and print the solution to stdout.
 
 Refer to the DESIGN.md file and class project specifications for more information regarding sudoku.
 
