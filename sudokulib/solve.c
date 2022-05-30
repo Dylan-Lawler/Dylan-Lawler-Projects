@@ -13,7 +13,7 @@ int solve_puzzle(board_t *board, int row, int column, int count){
     // If the board is full, then we're done with this solution
     // Otherwise, set row and column to next empty cell
     if (full_board(board, &row, &column)) {
-        // we found a solution, so increment count   
+        // we found a solution, so increment count 
         save_solution(board);
         return count+1;
     }

@@ -69,17 +69,31 @@ void insert_number(board_t *board, int row, int column, int number){
 }
 
 bool full_board(board_t *board, int *row, int *column){
-    for (int i = 0; i < board->num_rows; i ++){
-        for (int j = 0; j < board->num_rows; j ++){
-            if (counters_get(board->ptr_array[i], j) == 0){
-                *row = i;
-                *column = j;
-                return false;
-            }
+    int size = get_size(board);
+    for (int i = 0; i < (board->num_rows * board->num_rows); i ++){
+        int r = i/size;
+        int c = i % size;
+        if (counters_get(board->ptr_array[r], c) == 0){
+            *row = r;
+            *column = c;
+            return false;
         }
     }
     return true;
 }
+
+bool is_empty(board_t *board){
+    int size = get_size(board);
+    for (int i = 0; i < (size * size); i ++){
+        int r = i/size;
+        int c = i % size;
+        if (counters_get(board->ptr_array[r], c) != 0){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
@@ -226,22 +240,23 @@ board_t *load_sudoku(FILE *fp){
 void save_solution(board_t *board){
 
     int size = get_size(board);
-    for (int i = 0; i < size; i ++){
-        for (int j = 0; j < size; j ++){
-            int number = get_number(board, i, j);
-            counters_set(board->solution[i], j, number);
-        }
+    for (int i = 0; i < (size * size) ; i ++){
+        int r = i/size;
+        int c = i % size;
+        int number = get_number(board, r, c);
+        counters_set(board->solution[r], c, number);
+
     }
 }
 
 board_t* copy_board(board_t *board){
     int size = get_size(board);
     board_t *copy = board_new(size);
-    for (int i = 0; i < size; i ++){
-        for (int j = 0; j < size; j ++){
-            int number = get_number(board, i, j);
-            insert_number(copy, i,j, number);
-        }
+    for (int i = 0; i < (size * size) ; i ++){
+        int r = i/size;
+        int c = i % size;
+            int number = get_number(board, r, c);
+            insert_number(copy, r,c, number);
     }
     return copy;
 }
@@ -266,9 +281,11 @@ void print_solution(board_t *board){
 }
 
 void empty_board(board_t *board){
-    for (int i = 0; i < board->num_rows; i ++){
-        for (int j = 0; j < board->num_rows; j ++){
-            insert_number(board, i, j, 0);
-        }
+    for (int i = 0; i < (board->num_rows * board->num_rows); i ++){
+        int r = i/board->num_rows;
+        int c = i % board->num_rows;
+        
+            insert_number(board, r, c, 0);
+
     }
 }

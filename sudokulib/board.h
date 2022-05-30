@@ -18,6 +18,8 @@ void insert_number(board_t *board, int row, int column, int number);
 
 bool full_board(board_t *board, int* row, int *column);
 
+bool is_empty(board_t *board);
+
 void print_board(board_t *board);
 
 counters_t* get_row(board_t *board, int row);

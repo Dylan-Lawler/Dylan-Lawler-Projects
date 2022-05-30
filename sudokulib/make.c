@@ -94,6 +94,4 @@ void clear_spaces(board_t *board, int spaces){
         }
     
     free(cells);
-    printf("%d/%d cleared\n", cleared, spaces);
-    // until the desired amount of spaces are cleared 
 }
