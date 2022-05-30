@@ -32,3 +32,8 @@ clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
+
+PHONY: val
+
+val:
+	valgrind ./$(PROG) 500
