@@ -13,7 +13,7 @@ For n iterations (dependent on user input at command line):
 * TEST 5: print_solution of a solved board
 * TEST 6: delete a solved puzzle
 
-
+On any error, the program will exit and report the general issue. For example, if there is an issue making a board: `Could not make board` is returned.
 
 #### Functionality test output
 See testing.out for full testing output. 
