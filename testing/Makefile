@@ -1,4 +1,4 @@
-# Makefile for 'sudoku' program
+# Makefile for fuzz testing
 #
 # Dylan, Jordan, Alex, Eric
 #
@@ -32,4 +32,8 @@ clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
-	make -sC ../sudokulib clean
+
+PHONY: val
+
+val:
+	valgrind ./$(PROG) 500
