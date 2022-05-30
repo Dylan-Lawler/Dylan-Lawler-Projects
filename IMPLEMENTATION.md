@@ -55,18 +55,31 @@ void clear_spaces(board_t *board, int spaces);
 int solve_puzzle(board_t *board, int row, int column, int count);
 ```
 
+### Functions for `sudoku.c`
+```c
+int main(int argc, char *argv[]);
+bool make_puzzle(board_t *board, int row, int column);
+void clear_spaces(board_t *board, int spaces);
+```
+
+
 ## Pseudocode for functions
 
 ### Pseudocode for `board.c`
-Refer to sudoku.c for more detailed descriptions of functions and for comments.
+Refer to board.c for more detailed descriptions of functions and for comments.
 
 #### main
 ```
 ```
 
 ## Pseudocode for `make.c`
+Refer to make.c for more detailed descriptions of functions and for comments.
 
 ## Pseudocode for `solve.c`
+Refer to solve.c for more detailed descriptions of functions and for comments.
+
+### Functions for `sudoku.c`
+Refer to sudoku.c for more detailed descriptions of functions and for comments.
 
 ## Data structures
 
