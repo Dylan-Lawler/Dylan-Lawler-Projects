@@ -33,6 +33,7 @@ bool make_puzzle(board_t *board, int row, int column) {
 
     // Get size of board
     int size = get_size(board);
+<<<<<<< HEAD
     // Gte shuffled list of numbers in set {1,...,9}
     int *nums = number_list(size);
     // If the board is full, we are done
@@ -43,21 +44,53 @@ bool make_puzzle(board_t *board, int row, int column) {
     // Loop over all possible number insertions
     for (int num = 0; num < size; num++) {
         // If the number doesn't break sudoku rules...
+=======
+
+    // shuffled list of numbers
+    int *nums = number_list(size); 
+    // if the board is full, make puzzle is done
+    if (full_board(board, &row, &column) == true){
+	    free(nums);
+	    return true;
+    }
+   
+    // for all possible number insertions
+    for (int num = 0; num< size; num++)
+    {
+        // if the number doesn't break sudoku rules
+>>>>>>> c94918849cc363c39ca12df65f4f55ea4169e1b2
         if (check(board, nums[num], row , column) == true)
         {
             // Insert it
             insert_number(board, row, column, nums[num]);
+<<<<<<< HEAD
             // Go to the next number and tru the same
             if (make_puzzle(board, row, column)){
                 free(nums);
                 return true;
             }
             // If no numbers work, keep deleting until numbers work again
+=======
+    
+    	    // go to the next number and do the same
+	    if (make_puzzle(board, row, column)){
+		    free(nums);
+		    return true;
+            }
+
+            // if no numbers work, keep deleting until numbers work again
+>>>>>>> c94918849cc363c39ca12df65f4f55ea4169e1b2
             insert_number(board, row, column, 0);
         }
+
     }
+<<<<<<< HEAD
     // No numbers worked, backtrack
+=======
+    
+>>>>>>> c94918849cc363c39ca12df65f4f55ea4169e1b2
     free(nums);
+    // no numbers worked, backtrack
     return false;
 }
 
