@@ -27,24 +27,40 @@ int solve_puzzle(board_t *board, int row, int column, int count) {
         // We found a solution, so increment count and save the current solution
         // to the board struct
         save_solution(board);
-        return count+1;
+        if (size >= 16) return 20;
+        else return count+1;
     }
 
-    // Try each of the numbers 1-9 in the current cell
-    for (int num = 1; num <= size && count < 2; num++)
-    {
-        // If the number doesn't break sudoku rules
-        if ((check(board, num, row , column)))
-        {
-            // Insert it to the empty cell
-            insert_number(board, row, column, num);
-            // Go to the next empty cell and do the same
-            if ((count = solve_puzzle(board, row, column, count)) > 1){
-                return count;
+    if (size >= 16) {
+        for (int num = 1; num <= size; num++) {
+            if ((check(board, num, row, column))) {
+                insert_number(board, row, column, num);
+                if (solve_puzzle(board, row, column, 0) == 20) {
+                    return 20;
+                }
+                insert_number(board, row, column, 0);
             }
         }
+        return 10;
     }
-    // No numbers worked, backtrack
-    insert_number(board, row, column, 0);
-    return count;
+
+    else {
+        // Try each of the numbers 1-size in the current cell
+        for (int num = 1; num <= size && count < 2; num++)
+        {
+            // If the number doesn't break sudoku rules
+            if ((check(board, num, row , column)))
+            {
+                // Insert it to the empty cell
+                insert_number(board, row, column, num);
+                // Go to the next empty cell and do the same
+                if ((count = solve_puzzle(board, row, column, count)) > 1) {
+                    return count;
+                }
+            }
+        }
+        // No numbers worked, backtrack
+        insert_number(board, row, column, 0);
+        return count;
+    }
 }
