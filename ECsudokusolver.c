@@ -46,6 +46,7 @@ board_t *load_sudoku(FILE *fp, int size){
     int row = 0;
     int column = 0;
     int totalValues = 0;
+    int product = size*size;
 
     while ((currValue = fgetc(fp)) != EOF){ // while the current value is not end of file
         if (isalpha(currValue)){ // erro checking: not valid if alphabetical character present
@@ -61,11 +62,6 @@ board_t *load_sudoku(FILE *fp, int size){
                     return NULL;
                 }
                 totalValues++; // incrementing value count (eventually checking if precisely 81)
-                if (totalValues > (size*size)){ // error checking if more than size^2 total values
-                    fprintf(stderr, "Error: Provided sudoku puzzle must have exactly 81 total values (including 0's).\n");
-                    delete_puzzle(board, size);
-                    return NULL;
-                }
                 digit = currValue - '0'; // if not double-digit, convert digit to int
 
                 // note: row > size checker may not be needed
@@ -90,7 +86,11 @@ board_t *load_sudoku(FILE *fp, int size){
             column = 0; // resetting column to 0
         }
     }
-    
+    if (totalValues > (product)){ // error checking if more than size^2 total values
+        fprintf(stderr, "Error: Provided sudoku puzzle must have exactly %d total values (including 0's).\n", product);
+        delete_puzzle(board, size);
+        return NULL;
+    }
     return board;
 }
 
