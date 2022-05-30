@@ -6,6 +6,7 @@
 #include <math.h>
 #include <time.h>
 #include "../libcs50/counters.h"
+#include "../libcs50/memory.h"
 #include "solve.h"
 #include "../sudokulib/board.h"
 
@@ -65,11 +66,10 @@ int *number_list() {
     /**
      * Generates a randomly shuffled array of numbers in the interval [1,9].
      * @return  An integer array of randomly shuffled numbers
-     * 
     */
 
     // Create a list of possible numbers to insert to puzzle
-    int *num_list = calloc(9, sizeof(int));
+    int *num_list = assertp(calloc(9, sizeof(int)), "Failed to allocate memory for number list\n");
     // Add the numbers 1 through 9 to the array
     for (int i = 0; i < 9; i++) {
         num_list[i] = i + 1;

@@ -6,23 +6,26 @@
 #include <time.h>
 #include "solve.h"
 #include "../libcs50/counters.h"
+#include "../libcs50/memory.h"
 #include "make.h"
 
 typedef struct board {
-    counters_t **ptr_array;       // array of sets
+    counters_t **ptr_array;     // array of sets
     int num_rows;              // number of rows in the hashboard
     counters_t **solution;
 } board_t;
 
+/**************** board_new() ****************/
+/* see board.h for description */
 board_t *board_new(const int num_rows){
-    board_t *board = malloc(sizeof(board_t)); 
+    board_t *board = assertp(malloc(sizeof(board_t)), "Failed to allocate memory for new board\n"); 
     if (board == NULL) {
     return NULL;             
     } 
     else {
       board->num_rows = num_rows; 
-      board->ptr_array = calloc(board->num_rows, sizeof(counters_t*));
-      board->solution = calloc(board->num_rows, sizeof(counters_t*));
+      board->ptr_array = assertp(calloc(board->num_rows, sizeof(counters_t*)), "Failed to allocate memory for ptr_array\n");
+      board->solution = assertp(calloc(board->num_rows, sizeof(counters_t*)), "Failed to allocate memory for solution board\n");
       for (int i = 0; i < board->num_rows; i++){
           board->ptr_array[i] = counters_new();
           board->solution[i] = counters_new();
@@ -35,6 +38,8 @@ board_t *board_new(const int num_rows){
     }
 }
 
+/**************** delete_puzzle() ****************/
+/* see board.h for description */
 void delete_puzzle(board_t *board) {
     if (board != NULL) { // if there is something to free
         for (int i = 0; i < 9; i++) {
@@ -47,26 +52,38 @@ void delete_puzzle(board_t *board) {
     free(board);
 }
 
+/**************** get_number() ****************/
+/* see board.h for description */
 int get_number(board_t *board, int row, int column){
     return counters_get(board->ptr_array[row], column);
 }
 
+/**************** get_row() ****************/
+/* see board.h for description */
 counters_t* get_row(board_t *board, int row){
     return board->ptr_array[row];
 }
 
+/**************** get_size() ****************/
+/* see board.h for description */
 int get_size(board_t *board){
     return board->num_rows;
 }
 
+/**************** get_box_size() ****************/
+/* see board.h for description */
 int get_box_size(board_t *board){
     return (int)sqrt(board->num_rows);
 }
 
+/**************** insert_number() ****************/
+/* see board.h for description */
 void insert_number(board_t *board, int row, int column, int number){
     counters_set(board->ptr_array[row], column, number);
 }
 
+/**************** full_board() ****************/
+/* see board.h for description */
 bool full_board(board_t *board, int *row, int *column){
     for (int i = 0; i < board->num_rows; i ++){
         for (int j = 0; j < board->num_rows; j ++){
@@ -80,6 +97,8 @@ bool full_board(board_t *board, int *row, int *column){
     return true;
 }
 
+/**************** print_help() ****************/
+/* see board.h for description */
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
     if (key == 0){
@@ -93,6 +112,8 @@ void print_help(void *arg, const int key, const int count){
     }
 }
 
+/**************** print_board() ****************/
+/* see board.h for description */
 void print_board(board_t *board){
     for (int i = 0; i < board->num_rows; i ++){
         if (i == 0){
@@ -112,7 +133,8 @@ void print_board(board_t *board){
     }
 }
 
-// Check for sudoku rule violations
+/**************** check() ****************/
+/* see board.h for description */
 bool check(board_t *board, int num, int row, int column){
     // if the number matches any number in the same row or column, return false
     for (int i = 0; i < get_size(board); i++){
@@ -136,7 +158,8 @@ bool check(board_t *board, int num, int row, int column){
     return true;
 }
 
-
+/**************** load_size() ****************/
+/* see board.h for description */
 int load_size(FILE *fp){
     char c;
     int boardsize = 0;
@@ -161,7 +184,8 @@ int load_size(FILE *fp){
     return boardsize;
 }
 
-
+/**************** load_sudoku() ****************/
+/* see board.h for description */
 board_t *load_sudoku(FILE *fp){
     board_t *board = board_new(9);
     char currValue;
@@ -222,6 +246,8 @@ board_t *load_sudoku(FILE *fp){
     return board;
 }
 
+/**************** save_solution() ****************/
+/* see board.h for description */
 void save_solution(board_t *board){
 
     int size = get_size(board);
@@ -233,6 +259,8 @@ void save_solution(board_t *board){
     }
 }
 
+/**************** copy_board() ****************/
+/* see board.h for description */
 board_t* copy_board(board_t *board) {
     int size = get_size(board);
     board_t* board_copy = board_new(size);
@@ -245,6 +273,8 @@ board_t* copy_board(board_t *board) {
     return board_copy;
 }
 
+/**************** print_solution() ****************/
+/* see board.h for description */
 void print_solution(board_t *board){
     for (int i = 0; i < board->num_rows; i ++){
         if (i == 0){
@@ -264,6 +294,8 @@ void print_solution(board_t *board){
     }
 }
 
+/**************** empty_board() ****************/
+/* see board.h for description */
 void empty_board(board_t *board){
     for (int i = 0; i < board->num_rows; i ++){
         for (int j = 0; j < board->num_rows; j ++){
