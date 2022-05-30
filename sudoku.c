@@ -23,11 +23,12 @@ int main(int argc, char *argv[]){
     
     // Initialize board
     srand(time(NULL));
-    board_t *board = board_new(9);
+    board_t *board = board_new(16);
     
     // Make puzzle and print
     make_puzzle(board, 0, 0);
-    clear_spaces(board, 40);
+    printf("Made puzzle\n");
+    clear_spaces(board, 128);
     print_board(board);
     printf("\n");
     

@@ -90,7 +90,7 @@ int load_size(FILE *fp);
  * Input:   A pointer to a Sudoku board file
  * Output:  A board struct containing the loaded board
 */
-board_t *load_sudoku(FILE *fp);
+board_t *load_sudoku(FILE *fp, int size);
 
 /**************** save_solution ****************/
 /* Purpose: Save a solution to the board struct

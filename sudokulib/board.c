@@ -15,6 +15,10 @@ typedef struct board {
     counters_t **solution;
 } board_t;
 
+/**************** constants ****************/
+int BOARD_SIZE;
+
+
 /**************** board_new() ****************/
 /* see board.h for description */
 board_t *board_new(const int num_rows){
@@ -41,8 +45,9 @@ board_t *board_new(const int num_rows){
 /**************** delete_puzzle() ****************/
 /* see board.h for description */
 void delete_puzzle(board_t *board) {
+    int size = get_size(board);
     if (board != NULL) { // if there is something to free
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < size; i++) {
             counters_delete(board->ptr_array[i]); // freeing individual counters
             counters_delete(board->solution[i]);
         }
@@ -99,31 +104,62 @@ bool full_board(board_t *board, int *row, int *column){
 
 /**************** print_help() ****************/
 /* see board.h for description */
-void print_help(void *arg, const int key, const int count){
+void print_help(void *arg, const int key, const int count) {
+    if (count > 99) {
+        fprintf(stderr, "Sudoku board must be no bigger than 81x81\n");
+        exit(1);
+    }
     board_t *board = arg;
-    if (key == 0){
-        printf("| %d ", count);
+    if (key == 0) {
+        if (BOARD_SIZE > 9) {
+            if (count < 10) printf("| %d  ", count);
+            else printf("| %d ", count);
+        }
+        else printf("| %d ", count);
     }
-    else if ((key + 1) % get_box_size(board) == 0 ){
-        printf("%d | ", count);
+    else if ((key + 1) % get_box_size(board) == 0 ) {
+        if (BOARD_SIZE > 9) {
+            if (count < 10) printf("%d  | ", count);
+            else printf("%d | ", count);
+        }
+        else printf("%d | ", count);
     }
-    else{
-        printf("%d ", count);
+    else {
+        if (BOARD_SIZE > 9) {
+            if (count < 10) printf("%d  ", count);
+            else printf("%d ", count);
+        }
+        else printf("%d ", count);
     }
 }
 
 /**************** print_board() ****************/
 /* see board.h for description */
-void print_board(board_t *board){
+void print_board(board_t *board) {
+    int size = get_size(board);
+    BOARD_SIZE = size;
+    int box_size = get_box_size(board);
+    int num_dashes;
+    if (size < 16) {
+        num_dashes = 3 + 2*size + 2*(box_size-1);
+    }
+    else {
+        num_dashes = 3 + 3*size + 2*(box_size-1);
+    }
+    char separator[num_dashes]; // create row separator
+    for (int d = 0; d <= num_dashes; d++) {
+        separator[d] = '-';
+    }
+    separator[num_dashes] = '\0';
     for (int i = 0; i < board->num_rows; i ++){
         if (i == 0){
-            printf("-------------------------\n");
+            printf("%s\n", separator);
             counters_iterate(get_row(board, i), board, print_help);
             printf("\n");
         }
         else if (((i + 1 )% get_box_size(board) == 0)){
             counters_iterate(get_row(board, i), board, print_help);
-            printf("\n-------------------------\n");
+            printf("\n%s\n", separator);
             continue;
         }
         else{
@@ -142,13 +178,14 @@ bool check(board_t *board, int num, int row, int column){
             return false;
         }
     }
+    int boxsize = get_box_size(board);
     // start at the top left corner of the square
-    int boxrow = row - (row % 3);
-    int boxcol = column - (column % 3);
+    int boxrow = row - (row % boxsize);
+    int boxcol = column - (column % boxsize);
 
     // if the number matches any number in the square, return false 
-    for (int i = boxrow; i < boxrow + 3; i ++){
-        for (int j = boxcol; j < boxcol + 3; j ++){
+    for (int i = boxrow; i < boxrow + boxsize; i ++){
+        for (int j = boxcol; j < boxcol + boxsize; j ++){
             if (counters_get(get_row(board, i), j) == num){
                 return false;
             }
@@ -186,8 +223,8 @@ int load_size(FILE *fp){
 
 /**************** load_sudoku() ****************/
 /* see board.h for description */
-board_t *load_sudoku(FILE *fp){
-    board_t *board = board_new(9);
+board_t *load_sudoku(FILE *fp, int size){
+    board_t *board = board_new(size);
     char currValue;
     char prevValue = '\0';
     int digit;
@@ -221,7 +258,7 @@ board_t *load_sudoku(FILE *fp){
                 }
 
                 // note: row > 9 checker may not be needed
-                if (column > 9 || row > 9){ // error checking: if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
+                if (column > size || row > size){ // error checking: if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
                     fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns). Cannot exceed dimensions.\n");
                     delete_puzzle(board);
                     exit(4);
@@ -235,7 +272,7 @@ board_t *load_sudoku(FILE *fp){
             prevValue = currValue; // if still in same row, reassigning prevValue to currValue before next read
         }
         else{ // if at end of row (reading '\n')
-            if (column == 9){ 
+            if (column == size){ 
                 row++; // incrementing row
             };
             prevValue = '\0'; // resetting prevValue to '\0'
@@ -276,15 +313,29 @@ board_t* copy_board(board_t *board) {
 /**************** print_solution() ****************/
 /* see board.h for description */
 void print_solution(board_t *board){
+    int size = get_size(board);
+    int box_size = get_box_size(board);
+    int num_dashes;
+    if (size < 16) {
+        num_dashes = 3 + 2*size + 2*(box_size-1);
+    }
+    else {
+        num_dashes = 3 + 3*size + 2*(box_size-1);
+    }
+    char separator[num_dashes]; // create row separator
+    for (int d = 0; d <= num_dashes; d++) {
+        separator[d] = '-';
+    }
+    separator[num_dashes] = '\0';
     for (int i = 0; i < board->num_rows; i ++){
         if (i == 0){
-            printf("-------------------------\n");
+            printf("%s\n", separator);
             counters_iterate(board->solution[i], board, print_help);
             printf("\n");
         }
         else if (((i + 1 )% get_box_size(board) == 0)){
             counters_iterate(board->solution[i], board, print_help);
-            printf("\n-------------------------\n");
+            printf("\n%s\n", separator);
             continue;
         }
         else{
