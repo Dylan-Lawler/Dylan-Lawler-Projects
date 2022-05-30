@@ -6,34 +6,44 @@
 #include "../libcs50/counters.h"
 #include "board.h"
 
-// recursively make the puzzle by checking if each cell can hold any number 1-9
-int solve_puzzle(board_t *board, int row, int column, int count){
-    // size of row/column
+int solve_puzzle(board_t *board, int row, int column, int count) {
+    /**
+     * Solves puzzle recursively using backtracking alogorithm. Checks if there is more than one
+     * solution, and saves the second solution if found (else, saves the first).
+     * 
+     * @param board_t* board    The Suduko board to be solved
+     * @param int row           The current row in which the solver is working
+     * @param int column        The current column in which the solver is working
+     * @param int count         Counter to track number of solutions found (max 2)
+     * @return                  The number of solutions found
+     *
+     */
+
+    // Size of row (== size of column)
     int size = get_size(board);
     // If the board is full, then we're done with this solution
-    // Otherwise, set row and column to next empty cell
+    // Otherwise, set row and column to next empty cell (in full_board)
     if (full_board(board, &row, &column)) {
         // we found a solution, so increment count 
         save_solution(board);
         return count+1;
     }
 
+    // Try each of the numbers 1-9 in the current cell
     for (int num = 1; num <= size && count < 2; num++)
     {
-        // if the number doesn't break sudoku rules
+        // If the number doesn't break sudoku rules
         if ((check(board, num, row , column)))
         {
-            // insert it to the empty cell
+            // Insert it to the empty cell
             insert_number(board, row, column, num);
-            // go to the next empty cell and do the same
+            // Go to the next empty cell and do the same
             if ((count = solve_puzzle(board, row, column, count)) > 1){
                 return count;
             }
         }
     }
-    // no numbers worked, backtrack
+    // No numbers worked, backtrack
     insert_number(board, row, column, 0);
-
-    
     return count;
 }

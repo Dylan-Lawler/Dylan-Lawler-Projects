@@ -6,10 +6,12 @@
 #include <math.h>
 #include <time.h>
 #include "../libcs50/counters.h"
+#include "../libcs50/memory.h"
 #include "solve.h"
+#include "../sudokulib/board.h"
 
 // Local prototypes
-int *number_list();
+int *number_list(int size);
 void clear_spaces(board_t *board, int spaces);
 
 // recursively make the puzzle by checking if each cell can hold any number 1-9

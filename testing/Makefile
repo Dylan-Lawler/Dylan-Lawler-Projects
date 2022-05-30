@@ -1,17 +1,17 @@
-# Makefile for 'sudoku' program
+# Makefile for fuzz testing
 #
 # Dylan, Jordan, Alex, Eric
 #
 # CS50 Spring '22
  
 # executables
-PROG = sudoku
+PROG = fuzz
 
 # executables depend on their object files
-OBJS = sudoku.o
+OBJS = fuzztest.o
 
 # libraries
-LLIBS = sudokulib/sudokulib.a libcs50/libcs50-given.a
+LLIBS = ../sudokulib/sudokulib.a ../libcs50/libcs50-given.a
 
 # compilation
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I/sudokulib -I/libcs50
@@ -32,4 +32,8 @@ clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
-	make -sC sudokulib clean
+
+PHONY: val
+
+val:
+	valgrind ./$(PROG) 500

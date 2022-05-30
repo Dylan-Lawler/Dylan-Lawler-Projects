@@ -1,3 +1,12 @@
+/*
+ * sudoku.c - program to make a sudoku board and solve it using sudoku modules
+ *
+ * usage: ./sudoku
+ *
+ * Dylan, Jordan, Alex, Eric
+ * CS50 Spring '22
+ * 
+ */
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h>
@@ -10,6 +19,8 @@
 
 static void parse_args(const int argc, char *argv[], char **mode);
 int main(int argc, char *argv[]){
+    
+    // Initialize board
     srand(time(NULL));
     char *mode = NULL;
     parse_args(argc, argv, &mode);
@@ -22,7 +33,7 @@ static void parse_args(const int argc, char *argv[], char **mode)
     char *program = argv[0];
     *mode = argv[1];
     if ((argc != 2) || ((strcmp(*mode, "create")) && (strcmp(*mode, "solve")))){
-        fprintf(stderr, "Usage: %s create/solve\n", program);
+        fprintf(stderr, "Usage: %s solve board-size\nor\nUsage: %s create", program, program);
         exit (1); 
     }
 
@@ -36,7 +47,13 @@ static void parse_args(const int argc, char *argv[], char **mode)
 
     if (!(strcmp(*mode, "solve"))){
         printf("Enter Sudoku board:\n");
-        board_t *board = load_sudoku(stdin);
+        int size = atoi(argv[3]);
+        if (size == NULL){
+            size = 9;
+        }
+
+        printf("%d\n", size);
+        board_t *board = load_sudoku(stdin, size);
         if (is_empty(board)){
             fprintf(stderr, "Nothing/empty boards are not valid\n");
             return;
