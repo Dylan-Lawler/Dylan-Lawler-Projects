@@ -33,27 +33,24 @@ static void parse_args(const int argc, char *argv[], char **mode)
     char *program = argv[0];
     *mode = argv[1];
     if ((argc != 2) || ((strcmp(*mode, "create")) && (strcmp(*mode, "solve")))){
-        fprintf(stderr, "Usage: %s solve board-size\nor\nUsage: %s create\n", program, program);
+        fprintf(stderr, "Usage: %s solve\nor\nUsage: %s create\n", program, program);
         exit (1); 
     }
 
     if (!(strcmp(*mode, "create"))){
+        printf("Unique 9x9 Sudoku Board:\n");
         board_t *board = board_new(9);
         make_puzzle(board, 0, 0);
         clear_spaces(board, 40);
         print_board(board);
         printf("\n");
+        delete_puzzle(board);
+        return;
     }
 
     if (!(strcmp(*mode, "solve"))){
         printf("Enter Sudoku board:\n");
-        int size;
-        if (argv[2] == NULL){
-            size = 9;
-        }
-        else{
-            size = atoi(argv[2]);
-        }
+        int size = 9;
         board_t *board = load_sudoku(stdin, size);
         if (board == NULL){
             exit(2);
@@ -76,5 +73,6 @@ static void parse_args(const int argc, char *argv[], char **mode)
             printf("Solved Sudoku board:\n");
             print_solution(board);
             printf("\n");
+            delete_puzzle(board);
         }
 }
