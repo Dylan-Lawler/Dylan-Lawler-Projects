@@ -47,25 +47,29 @@ board_t *load_sudoku(FILE *fp, int size){
     int column = 0;
     int totalValues = 0;
     int product = size*size;
+    bool valid_format = true; // overarching valid_format checker
     bool valid_alpha = true; // tracking if any alphabetical characters in sudoku format appear, set to false
-    bool valid_double_digit = true; // 
-    bool valid_rc = true; // checking if valid row or column
-    bool valid_total = true;
+    bool valid_double_digit = true; // checking if valid to have double-digits given size
+    bool valid_rc = true; // checking if valid row or column numbers
+    bool valid_total = true; // checking if total number of values is appropriate for size
 
     while ((currValue = fgetc(fp)) != EOF){ // while the current value is not end of file
         if (isalpha(currValue) || totalValues > product){ // error checking: not valid if alphabetical character present
             valid_alpha = false;
+            valid_format = false;
         }
         if (currValue != '\n') { // if not at end of the row
             if (isdigit(currValue)){
                 if (isdigit(prevValue) && size < 16){ // if sudoku board size is < 16x16 size, can't have any 2 digit nubmers
                     valid_double_digit = false;
+                    valid_format = false;
                 }
                 totalValues++; // incrementing value count (eventually checking if precisely 81)
                 digit = currValue - '0'; // if not double-digit, convert digit to int
 
                 if (column > size || row > size){ // error checking: if number of columns or rows exceeds the size x size dimensions, invalid sudoku
                     valid_rc = false;
+                    valid_format = false;
                 }
             }
 
@@ -87,6 +91,7 @@ board_t *load_sudoku(FILE *fp, int size){
     }
     if (totalValues != (product)){ // error checking if more than size^2 total values
         valid_total = false;
+        valid_format = false;
     }
     // error specific message
 
