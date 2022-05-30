@@ -7,9 +7,9 @@
 ### Sudoku
 
 ### Usage
-Run `make` in the both the sudokulib directory and the common directory to compile the
-modules necessary to run sudoku. Then run `make` in sudoku directory, followed by running 
-`make test` within the same directory to test sudoku. Run `make clean` to delete the 
+Run `make` in the both the sudokulib directory and the libcs50 directory to compile the
+modules necessary to run sudoku. Then run `make` in the overall sudoku project directory. Finally, run 
+`make` and then `make test` within the testing directory to test sudoku. Run `make clean` to delete the 
 executables created from `make`. When running sudoku, must have one additional argument on top of the initial `./sudoku` declaration (e.g. `./sudoku create` or `./sudoku solve`).
 The user will be prompted from the terminal to provide input via stdin to test the create and solving capabilities of sudoku.
 
