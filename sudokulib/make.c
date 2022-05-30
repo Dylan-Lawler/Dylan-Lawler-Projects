@@ -33,8 +33,7 @@ bool make_puzzle(board_t *board, int row, int column) {
 
     // Get size of board
     int size = get_size(board);
-<<<<<<< HEAD
-    // Gte shuffled list of numbers in set {1,...,9}
+    // Get shuffled list of numbers in set {1,...,9}
     int *nums = number_list(size);
     // If the board is full, we are done
     if (full_board(board, &row, &column) == true) {
@@ -44,53 +43,21 @@ bool make_puzzle(board_t *board, int row, int column) {
     // Loop over all possible number insertions
     for (int num = 0; num < size; num++) {
         // If the number doesn't break sudoku rules...
-=======
-
-    // shuffled list of numbers
-    int *nums = number_list(size); 
-    // if the board is full, make puzzle is done
-    if (full_board(board, &row, &column) == true){
-	    free(nums);
-	    return true;
-    }
-   
-    // for all possible number insertions
-    for (int num = 0; num< size; num++)
-    {
-        // if the number doesn't break sudoku rules
->>>>>>> c94918849cc363c39ca12df65f4f55ea4169e1b2
         if (check(board, nums[num], row , column) == true)
         {
             // Insert it
             insert_number(board, row, column, nums[num]);
-<<<<<<< HEAD
-            // Go to the next number and tru the same
+            // Go to the next number and do the same
             if (make_puzzle(board, row, column)){
                 free(nums);
                 return true;
             }
             // If no numbers work, keep deleting until numbers work again
-=======
-    
-    	    // go to the next number and do the same
-	    if (make_puzzle(board, row, column)){
-		    free(nums);
-		    return true;
-            }
-
-            // if no numbers work, keep deleting until numbers work again
->>>>>>> c94918849cc363c39ca12df65f4f55ea4169e1b2
             insert_number(board, row, column, 0);
         }
-
     }
-<<<<<<< HEAD
     // No numbers worked, backtrack
-=======
-    
->>>>>>> c94918849cc363c39ca12df65f4f55ea4169e1b2
     free(nums);
-    // no numbers worked, backtrack
     return false;
 }
 
@@ -130,65 +97,36 @@ void clear_spaces(board_t *board, int spaces) {
      *
     */
 
-    // Create array of all board positions and shuffle it
     int size = get_size(board);
-    struct position positions[size*size]; // Initialize array of size 81
-    int idx = 0;
-    struct position pos; // Track current position
-    for (int row = 0; row < size; row++) {
-        for (int col = 0; col < size; col++) {
-            pos.row = row;
-            pos.col = col;
-            positions[idx] = pos;
-            idx++;
+
+    // keeps track of spaces made 
+    int *cells = number_list((size * size) - 1);
+    int cleared = 0; 
+
+    for (int i = 0; i < (size * size); i++){
+        int slot = cells[i];
+        int row = slot/size;
+        int column = slot % size;
+        int number = get_number(board, row, column);
+        insert_number(board, row, column, 0);
+        cleared++;
+        board_t *copy = copy_board(board); 
+        if ((solve_puzzle(copy, 0, 0,0)) > 1 ){
+            insert_number(board, row, column, number);
+            cleared --;
+        }
+        delete_puzzle(copy);
+        if (cleared == spaces){
+           break;
         }
     }
 
-    // Randomly shuffle positions
-    for (int i = 0; i < size*size; i++) {
-        int random = rand() % (size*size);
-        struct position temp = positions[i];
-        positions[i] = positions[random];
-        positions[random] = temp;
-    }
-
-    int currIdx = 0; // Current index in positions array
-    board_t* board_copy;
-    // Keeps track of spaces already made empty
-    int cleared = 0;
-    // Loop until the desired amount of spaces are cleared
-    while (cleared < spaces) {
-        // Pick a random cell
-        if (currIdx == size*size) {
+    if (cleared < spaces){
             empty_board(board);
             make_puzzle(board, 0, 0);
-            currIdx = 0;
-            cleared = 0;
+            clear_spaces(board, spaces);
         }
-        int row = positions[currIdx].row;
-        int col = positions[currIdx].col;
-        // If it's not already emptied, set it to 0 and increment number of empty cells
-        int currNum = get_number(board, row, col);
-        if (currNum != 0) {
-            // Set current cell to 0
-            insert_number(board, row, col, 0);
-            // Create board copy to use for validation
-            board_copy = copy_board(board);
-            // Check if this move leads to a non-unique solution
-            if (solve_puzzle(board_copy, 0, 0, 0) > 1) {
-                // If so, put number back in and continue with loop
-                insert_number(board, row, col, currNum);
-                currIdx++; // Move to next board position
-                delete_puzzle(board_copy);
-                continue;
-            }
-            // If puzzle was unique, increment counter and move to next position
-            else {
-                cleared++;
-                currIdx++;
-                delete_puzzle(board_copy);
-            }
-        }
-    }
+    
+    free(cells);
 }
 
