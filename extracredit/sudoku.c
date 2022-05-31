@@ -15,9 +15,9 @@
 #include <ctype.h>
 #include <sys/time.h>
 #include "../libcs50/counters.h"
-#include "../sudokulib/board.h"
-#include "../sudokulib/make.h"
-#include "../sudokulib/solve.h"
+#include "sudokulib/board.h"
+#include "sudokulib/make.h"
+#include "sudokulib/solve.h"
 
 static void parse_args(const int argc, char *argv[], char **mode);
 int main(int argc, char *argv[]){
