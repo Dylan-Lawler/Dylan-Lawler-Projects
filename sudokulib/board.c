@@ -190,7 +190,11 @@ board_t *load_sudoku(FILE *fp, int size){
     bool valid_total = true; // checking if total number of values is appropriate for size
 
     while ((currValue = fgetc(fp)) != EOF){ // while the current value is not end of file
-        if (isalpha(currValue) || totalValues > product){ // error checking: not valid if alphabetical character present
+        if (totalValues > product){
+            valid_total = false;
+            valid_format = false;
+        }
+        if (isalpha(currValue)){ // error checking: not valid if alphabetical character present
             valid_alpha = false;
             valid_format = false;
         }
@@ -254,7 +258,7 @@ board_t *load_sudoku(FILE *fp, int size){
 
     // checking if invalid total number of values in sudoku board
     if (!valid_total){ 
-        fprintf(stderr, "\nError: Provided input is empty or sudoku puzzle doesn't have the correct number of values.\n", product);
+        fprintf(stderr, "\nError: Provided input is empty or sudoku puzzle doesn't have the correct number of values.\n");
         delete_puzzle(board);
         return NULL;   
     }

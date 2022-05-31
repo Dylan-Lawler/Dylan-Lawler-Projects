@@ -13,6 +13,7 @@
 #include <ctype.h>
 #include <sys/time.h>
 #include "libcs50/counters.h"
+#include "libcs50/memory.h"
 #include "sudokulib/board.h"
 #include "sudokulib/make.h"
 #include "sudokulib/solve.h"
