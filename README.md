@@ -13,6 +13,8 @@ modules necessary to run sudoku. Then run `make` in sudoku directory, followed b
 executables created from `make`. When running sudoku, must have one additional argument on top of the initial `./sudoku` declaration (e.g. `./sudoku create` or `./sudoku solve`).
 The user will be prompted from the terminal to provide input via stdin to test the create and solving capabilities of sudoku.
 
+The extracredit folder contains a README file with instructions on running the extra credit version of our project, which handles boards of size 4x4, 9x9, or 16x16.
+
 ### Organization of Directories and Files
 * sudokulib
     - contains major helper files for sudoku, including:
