@@ -36,16 +36,16 @@ bool full_board(board_t *board, int *row, int *column);
 void print_help(void *arg, const int key, const int count);
 void print_board(board_t *board);
 bool check(board_t *board, int num, int row, int column);
-int load_size(FILE *fp);
-board_t *load_sudoku(FILE *fp);
+board_t *load_sudoku(FILE *fp, int size);
 void save_solution(board_t *board);
+board_t* copy_board(board_t *board);
 void print_solution(board_t *board);
 void empty_board(board_t *board);
 ```
 
 ### Functions for `make.c`
 ```c
-int *number_list();
+int *number_list(int size);
 bool make_puzzle(board_t *board, int row, int column);
 void clear_spaces(board_t *board, int spaces);
 ```
@@ -60,13 +60,51 @@ int solve_puzzle(board_t *board, int row, int column, int count);
 ### Pseudocode for `board.c`
 Refer to sudoku.c for more detailed descriptions of functions and for comments.
 
-#### main
-```
-```
+`board_new`
+
+`delete_puzzle`
+
+`get_number`
+
+`get_row`
+
+`get_size`
+
+`get_box_size`
+
+`insert_number`
+
+`full_board`
+
+`print_help`
+
+`print_board`
+
+`check`
+
+`load_sudoku`
+
+`save_solution`
+
+`copy_board`
+
+`print_solution`
+
+`empty_board`
+
 
 ## Pseudocode for `make.c`
 
+`number_list`
+
+`make_puzzle`
+
+`clear_spaces`
+
+
 ## Pseudocode for `solve.c`
+
+`solve_puzzle`
 
 ## Data structures
 
