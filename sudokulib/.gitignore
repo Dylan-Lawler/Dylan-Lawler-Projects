@@ -1,3 +1,4 @@
 board.o
 make.o
 solve.o
+sudokulib.a
