@@ -62,6 +62,8 @@ bool make_puzzle(board_t *board, int row, int column){
     return false;
 }
 
+/**************** clear_spaces ****************/
+/* See make.h for a more detailed description */
 void clear_spaces(board_t *board, int spaces){
     int size = get_size(board);
     // list of all possible cell spaces

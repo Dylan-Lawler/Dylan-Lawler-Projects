@@ -162,11 +162,41 @@ Refer to sudoku.c for more detailed descriptions of functions and for comments.
 ## Pseudocode for `make.c`
 
 `number_list`
+1. Create a list of possible numbers to insert into puzzle
+2. Shuffle the numbers around to help randomize puzzle
+3. Return shuffled number list
 
 `make_puzzle`
+1. If the board is full
+    1. Free number list
+    2. Return true to signify make_puzzle is done
+2. Loop over all possible number insertions
+    1. If the number does not break sudoku rules
+        1. Insert number into board
+        2. Progress to next number by recursively calling make_puzzle with newly updated board
+            1. Free number list
+            2. Return true if no errors
+        3. If no numbers work, keep deleting by inserting 0 in board spot until numbers work
+3. If no numbers worked, backtrack
+    1. Free number list
+    2. Return false
 
 `clear_spaces`
-
+1. Create list of possible cell spaces
+2. Loop through total number of possible cell spaces
+    1. Replace current value with 0
+    2. Increment total of cleared spaces
+    3. Create a board struct copy so original board isn't changed
+    4. If cannot solve puzzle
+        1. Put removed number back
+        2. Decrement total of cleared spaces
+    5. Delete copy of puzzle
+    6. Break loop if board is empty enough
+3. If board could not be emptied enough and be unique
+    1. Empty board
+    2. Make a new puzzle
+    3. Recursively call clear_spaces to try to make a board that meets our specifications again
+4. Free the list of cells
 
 ## Pseudocode for `solve.c`
 
