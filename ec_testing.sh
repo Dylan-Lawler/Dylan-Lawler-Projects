@@ -2,8 +2,6 @@
 
 ret=0
 
-start=$SECONDS
-
 # Argument checking
 if [ $# -ne 0 ]; then
 	echo >&2 "Please don't enter any arguments"
