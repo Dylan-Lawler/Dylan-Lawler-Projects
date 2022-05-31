@@ -25,11 +25,15 @@ $(LLIBS):
 	make -sC libcs50
 	make -sC sudokulib
 
-PHONY:  clean
-
+PHONY: test clean
 # clean all makefile made files and clean libraries
+
+test: 
+	bash testing/testing.sh &> testing.out
+
 clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
 	make -sC sudokulib clean
+	make -sC testing clean

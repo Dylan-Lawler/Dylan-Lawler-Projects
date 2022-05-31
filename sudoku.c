@@ -62,7 +62,7 @@ static void parse_args(const int argc, char *argv[], char **mode)
         // prompt an input of a 9x9 sudoku board
         printf("Enter Sudoku board:\n");
         int size = 9;
-        board_t *board = assertp(load_sudoku(stdin, size), "load board");
+        board_t *board = load_sudoku(stdin, size);
         // board couldnt be created and loaded
         if (board == NULL){
             exit(2);
