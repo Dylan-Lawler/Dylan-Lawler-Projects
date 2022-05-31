@@ -201,12 +201,39 @@ Refer to sudoku.c for more detailed descriptions of functions and for comments.
 ## Pseudocode for `solve.c`
 
 `solve_puzzle`
+1. If there is a completely filled board (suggesting it is solved)
+    1. Save the board struct solution to the board struct
+    2. Return the count for number of solutions found to help with checking for uniqueness
+2. If not fully solved, set row and column to next empty cell
+3. Loop through all possible numbers for the specific space on the sudoku board
+    1. If the number does not violate sudoku rules
+        1. Insert number into sudoku board
+        2. Proceed to next empty cell and recursively call solve_puzzle
+        3. If there is more than one solution, the sudoku puzzle is not unique. Return count
+4. If no numbers could be inserted, backtrack
+5. Return count
 
 ## Data structures
 
-Furthermore, we made several data structures:
+In sudoku, we created one main data structure called `board_t`:
 ```
+typedef struct board {
+    counters_t **ptr_array;     // array of counters
+    int num_rows;              // number of rows in the sudoku board
+    counters_t **solution;      // solved board
+} board_t;
 ```
+This struct contains the functionality to store the original sudoku board and its solution sudoku board as an array of counters, alongside an integer storing the number of rows of the sudoku board. board_t contains three struct elements:
+
+1. counters_t **ptr_array
+    - An array of counters to keep track of the original sudoku board
+2. int num_rows
+    - An integer to keep track of the number of rows within the sudoku
+3. counters_t **solution
+    - An array of counters to keep track of the solution to the original sudoku board
+
+We also used counters, specifically an array of counters, to store a counter at each value in a sudoku board so we could apply convenient counter functionalities such as counters_set, counters_get, and counters_delete when manipulating the values on the sudoku board.
+    
 
 ## Error handling
 We handle and catch errors via conditional statements and printing appropriate error messages.
