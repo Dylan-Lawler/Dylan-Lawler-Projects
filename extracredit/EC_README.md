@@ -1,6 +1,6 @@
 ## Usage
 
-First, run `make clean; make` in terminal to compile the extra credit version of our project.
+First, run `make clean; make` in terminal WHILE IN THIS FOLDER to compile the extra credit version of our project.
 
 Run `make ec_test` for testing.
 
