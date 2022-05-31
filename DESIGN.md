@@ -35,26 +35,26 @@ The above pseudocode realizes a backtracking solution to puzzle generation. At f
 # Sudoku Solver
 
 ## Purpose
-This part of the module solves a premade Sudoku board. That is, it inserts numbers in the empty spaces according to the rules outlined in the project description.
+This part of the module solves a premade Sudoku board. That is, it inserts numbers in the empty spaces according to the rules outlined in the project description. Our solver also checks to see if the board passed to it has two solutions or a unique solution.
 
 ## Pseudocode
-The Sudoku solver operates in much the same way as the puzzle generator (which is to be expected, since the generator is just "solving" and empty puzzle board). It is contained in the `solve_puzzle` function, and takes as parameters a `board`, a `row`, and a `column`. The algorithm flow of the recursive functino is as follows:
+The Sudoku solver operates in much the same way as the puzzle generator (which is to be expected, since the generator is just "solving" and empty puzzle board). It is contained in the `solve_puzzle` function, and takes as parameters a `board`, a `row`, and a `column`. However, instead of returning a boolean, it returns an integer `count` representing the number of distinct solutions found so far. The algorithm flow of the recursive function is as follows:
 
-1. If the board is solved, return `true`
-2. If not, loop over the entire board to check for empty space, and assign `row` and `column` to the coordinates of the first empty space found
+1. If the board is solved, save the solution to the input board struct and return `count+1`.
+2. If not, then the previous function (that checks if the board is full) will assign parameters `row` and `column` to the coordinates of the first empty space found
 3. Then, loop over all possible number insertions 1 through 9
 
     a. If it wouldn't break Sudoku rules to place the current number at the current board position, then insert it
     
-    b. Now recurse: call `solve_puzzle` on the board, with the current row and column as parameters
+    b. Now recurse: call `solve_puzzle` on the board at the current position
     
-    c. If the above call returns `true`, then return `true`
+    c. If the above call returns `count > 1`, return `count`
     
     d. If the current number doesn't work, then insert a 0 in the board at the current position
     
-4. If no numbers worked, then return `false` to trigger backtracking
+4. If no numbers worked, then insert 0 at the current position and return `count` to trigger backtracking
 
-It can be seen that the flow of this algorithm follows the same logic as the `make_puzzle` function above. We tentatively insert numbers in positions that aren't violating any rules, but we backtrack and try different numbers if this causes problems later on.
+It can be seen that the flow of this algorithm follows the same basic logic as the `make_puzzle` function above. We tentatively insert numbers in positions that aren't violating any rules, but we backtrack and try different numbers if this causes problems later on.
 
 # Helper functions
 
@@ -64,7 +64,7 @@ There are a number of helper functions contained in the main `sudoku.c` file, as
 
 ### clear_spaces
 
-This function randomly deletes entries from a fully initialized and valid Sudoku board. We simply generate random `(row,col)` coordinates on the board, set their entry to $0$, and increment a counter that keeps track of how many empty spaces there currently are.
+This function randomly deletes entries from a fully initialized and valid Sudoku board. As per the requirements spec, our function *guarantees* that the board ends up having a unique solution, namely by calling `solve_puzzle`, checking the number of solutions after each cleared space, and re-inserting the number (or, if we've reached the end of the board, starting over) if `solve_puzzle` returns > 1 solutions.
 
 ### check
 
