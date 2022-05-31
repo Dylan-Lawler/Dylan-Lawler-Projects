@@ -44,8 +44,6 @@ void insert_number(board_t *board, int row, int column, int number);
 */
 bool full_board(board_t *board, int* row, int *column);
 
-bool is_empty(board_t *board);
-
 void print_board(board_t *board);
 
 /**************** get_row ****************/
@@ -76,13 +74,6 @@ int get_box_size(board_t *board);
 */
 bool check(board_t *board, int num, int row, int column);
 
-/**************** load_size ****************/
-/* Purpose: Load the size of the board from a Sudoku board file
- * Input:   A pointer to a Sudoku board file
- * Output:  The size of the loaded board
-*/
-int load_size(FILE *fp);
-
 /**************** load_sudoku ****************/
 /* Purpose: Load a Sudoku board from a file
  * Input:   A pointer to a Sudoku board file
@@ -96,8 +87,17 @@ board_t *load_sudoku(FILE *fp, int size);
 */
 void save_solution(board_t *board);
 
+/**************** copy_board ****************/
+/* Purpose: Create a copy of the input board
+ * Input:   A board struct
+ * Output:  A deep copy of the board
+*/
 board_t* copy_board(board_t *board);
-
+ 
+/**************** print_solution ****************/
+/* Purpose: Print a solved board
+ * Input:   A board struct
+*/
 void print_solution(board_t *board);
 
 /**************** empty_board ****************/

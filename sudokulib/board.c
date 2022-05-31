@@ -12,31 +12,29 @@
 
 typedef struct board {
     counters_t **ptr_array;     // array of counters
-    int num_rows;              // number of rows in the hashboard
-    counters_t **solution;
+    int num_rows;              // number of rows in the sudoku board
+    counters_t **solution;      // solved board
 } board_t;
 
 /**************** board_new() ****************/
 /* see board.h for description */
 board_t *board_new(const int num_rows){
     board_t *board = assertp(malloc(sizeof(board_t)), "Failed to allocate memory for new board\n"); 
-    if (board == NULL) {
-    return NULL;             
-    } 
-    else {
-      board->num_rows = num_rows; 
-      board->ptr_array = assertp(calloc(board->num_rows, sizeof(counters_t*)), "Failed to allocate memory for ptr_array\n");
-      board->solution = assertp(calloc(board->num_rows, sizeof(counters_t*)), "Failed to allocate memory for solution board\n");
-      for (int i = 0; i < board->num_rows; i++){
-          board->ptr_array[i] = counters_new();
-          board->solution[i] = counters_new();
-          for (int j = 0; j < board->num_rows; j++){
-            counters_set(board->ptr_array[i], j, 0 );
-            counters_set(board->solution[i], j, 0 );
-        }
-      }
-      return board;
+    // dimension of the board
+    board->num_rows = num_rows; 
+    // allocate memory for the counter arrays
+    board->ptr_array = assertp(calloc(board->num_rows, sizeof(counters_t*)), "Failed to allocate memory for ptr_array\n");
+    board->solution = assertp(calloc(board->num_rows, sizeof(counters_t*)), "Failed to allocate memory for solution board\n");
+    // fill every cell in the original and solution boards with 0
+    for (int i = 0; i < board->num_rows; i++){
+        board->ptr_array[i] = counters_new();
+        board->solution[i] = counters_new();
+        for (int j = 0; j < board->num_rows; j++){
+        counters_set(board->ptr_array[i], j, 0 );
+        counters_set(board->solution[i], j, 0 );
     }
+    }
+    return board;
 }
 
 /**************** delete_puzzle() ****************/
@@ -88,35 +86,30 @@ void insert_number(board_t *board, int row, int column, int number){
 /* see board.h for description */
 bool full_board(board_t *board, int *row, int *column){
     int size = get_size(board);
+    // return false if the board has a 0
     for (int i = 0; i < (board->num_rows * board->num_rows); i ++){
         int r = i/size;
         int c = i % size;
         if (counters_get(board->ptr_array[r], c) == 0){
+            //  set the row and column to the position of the next 0
             *row = r;
             *column = c;
             return false;
         }
     }
+    // board has no 0's
     return true;
 }
 
-bool is_empty(board_t *board){
-    int size = get_size(board);
-    for (int i = 0; i < (size * size); i ++){
-        int r = i/size;
-        int c = i % size;
-        if (counters_get(board->ptr_array[r], c) != 0){
-            return false;
-        }
-    }
-    return true;
-}
-
+/**************** fprint_help() ****************/
+/* prints every cell value depending on its position*/
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
+    // border for left side
     if (key == 0){
         printf("| %d ", count);
     }
+    // box and right side borders
     else if ((key + 1) % get_box_size(board) == 0 ){
         printf("%d | ", count);
     }
@@ -130,11 +123,13 @@ void print_help(void *arg, const int key, const int count){
 void print_board(board_t *board){
     for (int i = 0; i < board->num_rows; i ++){
         if (i == 0){
+            // top border
             printf("-------------------------\n");
             counters_iterate(get_row(board, i), board, print_help);
             printf("\n");
         }
         else if (((i + 1 )% get_box_size(board) == 0)){
+            // box and bottom borders
             counters_iterate(get_row(board, i), board, print_help);
             printf("\n-------------------------\n");
             continue;
@@ -171,32 +166,6 @@ bool check(board_t *board, int num, int row, int column){
     return true;
 }
 
-/**************** load_size() ****************/
-/* see board.h for description */
-int load_size(FILE *fp){
-    char c;
-    int boardsize = 0;
-    int line = 0; 
-
-    while ((c = fgetc(fp)) != EOF){
-        if (c == '\n'){
-                line++;
-        }
-        if (line == 1){
-            if (isdigit(c)){
-                boardsize++;
-            }
-        }
-
-    }
-
-    double root = sqrt(boardsize);
-    if ((root * root) != boardsize){
-        return 0;
-    }
-    return boardsize;
-}
-
 /**************** load_sudoku() ****************/
 /* see board.h for description */
 board_t *load_sudoku(FILE *fp, int size){
@@ -206,7 +175,7 @@ board_t *load_sudoku(FILE *fp, int size){
         return NULL;
     }
     
-    board_t *board = board_new(size);
+    board_t *board = assertp(board_new(size), "new board");
     char currValue;
     char prevValue = '\0';
     int digit;
@@ -285,7 +254,7 @@ board_t *load_sudoku(FILE *fp, int size){
 
     // checking if invalid total number of values in sudoku board
     if (!valid_total){ 
-        fprintf(stderr, "\nError: Provided sudoku puzzle must have exactly %d values based on specified size.\n", product);
+        fprintf(stderr, "\nError: Provided input is empty or sudoku puzzle doesn't have the correct number of values.\n", product);
         delete_puzzle(board);
         return NULL;   
     }
@@ -306,9 +275,12 @@ void save_solution(board_t *board){
     }
 }
 
+/**************** copy_board() ****************/
+/* see board.h for description */
 board_t* copy_board(board_t *board){
     int size = get_size(board);
-    board_t *copy = board_new(size);
+    board_t *copy = assertp(board_new(size), "new board");
+    // assert the number in the original board in the same slot of the copy
     for (int i = 0; i < (size * size) ; i ++){
         int r = i/size;
         int c = i % size;
@@ -342,6 +314,7 @@ void print_solution(board_t *board){
 /**************** empty_board() ****************/
 /* see board.h for description */
 void empty_board(board_t *board){
+    // set all cells to 0
     for (int i = 0; i < (board->num_rows * board->num_rows); i ++){
         int r = i/board->num_rows;
         int c = i % board->num_rows;
