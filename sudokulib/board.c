@@ -102,14 +102,30 @@ bool full_board(board_t *board, int *row, int *column){
     return true;
 }
 
+/**************** is_empty() ****************/
+/* see board.h for description */
+bool is_empty(board_t *board){
+    int size = get_size(board);
+    for (int i = 0; i < (size * size); i ++){
+        int r = i/size;
+        int c = i % size;
+        if (counters_get(board->ptr_array[r], c) != 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+
 /**************** print_help() ****************/
 /* see board.h for description */
 void print_help(void *arg, const int key, const int count) {
-    if (count > 99) {
+    if (count > 81) {
         fprintf(stderr, "Sudoku board must be no bigger than 81x81\n");
         exit(1);
     }
     board_t *board = arg;
+    BOARD_SIZE = get_size(board);
     if (key == 0) {
         if (BOARD_SIZE > 9) {
             if (count < 10) printf("| %d  ", count);
@@ -137,7 +153,7 @@ void print_help(void *arg, const int key, const int count) {
 /* see board.h for description */
 void print_board(board_t *board) {
     int size = get_size(board);
-    BOARD_SIZE = size;
+    //BOARD_SIZE = size;
     int box_size = get_box_size(board);
     int num_dashes;
     if (size < 16) {
@@ -224,49 +240,56 @@ int load_size(FILE *fp){
 /**************** load_sudoku() ****************/
 /* see board.h for description */
 board_t *load_sudoku(FILE *fp, int size){
+    // checking if invalid sudoku dimensions already
+    if (size == 0 || size > 81){
+        fprintf(stderr, "Sudoku is of invalid size. Please input a sudoku board between 4x4 and 81x81.\n");
+        return NULL;
+    }
+    
     board_t *board = board_new(size);
     char currValue;
     char prevValue = '\0';
     int digit;
     int row = 0;
     int column = 0;
-    int missingValues = 0;
     int totalValues = 0;
+    char number[4];
+    int product = size*size;
+    bool valid_format = true; // overarching valid_format checker
+    bool valid_alpha = true; // tracking if any alphabetical characters in sudoku format appear, set to false
+    bool valid_double_digit = true; // checking if valid to have double-digits given size
+    bool valid_rc = true; // checking if valid row or column numbers
+    bool valid_total = true; // checking if total number of values is appropriate for size
 
     while ((currValue = fgetc(fp)) != EOF){ // while the current value is not end of file
-        if (isalpha(currValue)){ // erro checking: not valid if alphabetical character present
-            fprintf(stderr, "Error: %c is not a valid value in the sudoku board. Cannot have alphabetical characters.\n", currValue);
-            delete_puzzle(board);
-            exit(1);
+        if (isalpha(currValue) || totalValues > product){ // error checking: not valid if alphabetical character present
+            valid_alpha = false;
+            valid_format = false;
         }
         if (currValue != '\n') { // if not at end of the row
             if (isdigit(currValue)){
-                if (isdigit(prevValue)){ // cannot be possible if 2 digit number in provided board
-                    fprintf(stderr, "Error: %c%c is not a valid value in the sudoku board. Must be a single digit from 0-9.\n", prevValue, currValue);
-                    delete_puzzle(board);
-                    exit(2);
-                }
-                totalValues++; // incrementing value count (eventually checking if precisely 81)
-                if (totalValues > 81){ // error checking if more than 81 total values
-                    fprintf(stderr, "Error: Provided sudoku puzzle must have exactly 81 total values (including 0's).\n");
-                    delete_puzzle(board);
-                    exit(3);
+                if (isdigit(prevValue) && size < 16){
+                    valid_double_digit = false;
+                    valid_format = false;
                 }
                 digit = currValue - '0'; // if not double-digit, convert digit to int
-                if (digit == 0){
-                    missingValues++; // incrementing missing values (provided as 0), checking eventually if >= 40 to be valid
+                if (isdigit(prevValue) && size >= 16){
+                    sprintf(number, "%c%c", prevValue, currValue);
+                    digit = atoi(number);
                 }
 
-                // note: row > 9 checker may not be needed
-                if (column > size || row > size){ // error checking: if number of columns or rows exceeds the 9x9 dimensions, invalid sudoku
-                    fprintf(stderr, "Error: Dimensions of sudoku must be exactly 9x9 (9 rows, 9 columns). Cannot exceed dimensions.\n");
-                    delete_puzzle(board);
-                    exit(4);
+                if (column > size || row > size){ // error checking: if number of columns or rows exceeds the size x size dimensions, invalid sudoku
+                    valid_rc = false;
+                    valid_format = false;
                 }
             }
 
             else if (isdigit(prevValue) && isspace(currValue)){ // represents a valid digit
-                insert_number(board, row, column, digit); // inserting previous value into board
+                if (valid_format){
+                    insert_number(board, row, column, digit); // inserting previous value into board
+                    totalValues++;
+                    //printf("Total values: %d\n", totalValues);
+                }
                 column++; // tracking number of columns
             }
             prevValue = currValue; // if still in same row, reassigning prevValue to currValue before next read
@@ -274,12 +297,44 @@ board_t *load_sudoku(FILE *fp, int size){
         else{ // if at end of row (reading '\n')
             if (column == size){ 
                 row++; // incrementing row
-            };
+            }
             prevValue = '\0'; // resetting prevValue to '\0'
             column = 0; // resetting column to 0
         }
     }
-    
+    if (totalValues != (product)){ // error checking if more than size^2 total values
+        valid_total = false;
+        valid_format = false;
+    }
+    // error specific message
+
+    // checking invalid alphabetical characters
+    if (!valid_alpha){ 
+        fprintf(stderr, "\nError: Cannot have alphabetical characters.\n");
+        delete_puzzle(board);
+        return NULL;   
+    }
+
+    // checking if invalid double-digits
+    if (!valid_double_digit){ 
+        fprintf(stderr, "\nError: Cannot have double-digit numbers for specified size.\n");
+        delete_puzzle(board);
+        return NULL;   
+    }
+
+     // checking if invalid dimensions (rows x columns)
+    if (!valid_rc){ 
+        fprintf(stderr, "\nError: Dimensions of sudoku are invalid for specified size.\n");
+        delete_puzzle(board);
+        return NULL;   
+    }
+
+    // checking if invalid total number of values in sudoku board
+    if (!valid_total){ 
+        fprintf(stderr, "\nError: Provided sudoku puzzle must have exactly %d values based on specified size.\n", product);
+        delete_puzzle(board);
+        return NULL;   
+    }
     return board;
 }
 
