@@ -61,36 +61,102 @@ int solve_puzzle(board_t *board, int row, int column, int count);
 Refer to sudoku.c for more detailed descriptions of functions and for comments.
 
 `board_new`
+1. Create a new board struct by first allocating memory to the board. 
+2. Initialize the dimensions of the board
+3. Allocate memory to counter arrays that are part of board struct
+4. Initialize every cell in the original and solution boards to 0 using counters_set
+5. Return the board
 
 `delete_puzzle`
+1. Check if there is board is not NULL (so something to free)
+2. Loop over board and call counters_delete to delete every entry within counters array
+3. Free the board struct
 
 `get_number`
+1. Call counters_get to retrieve specific value at specified location
+2. Return retrieved value
 
 `get_row`
+1. Retrieve specified row from within counters array
+2. Return the retrieved row
 
 `get_size`
+1. Retrieve total number of rows within board struct
+2. Return the total number
 
 `get_box_size`
+1. Retrieve the square root of the number of rows in the board
+2. Return the calculated value
 
 `insert_number`
+1. Call counters_set to insert value into specified location on board
 
 `full_board`
+1. Loop through entire board, checking if any entries are '0'
+    1. If any values are '0', return false
+    2. Otherwise, return true
 
 `print_help`
+1. If specified key is a left border value, print "| key" format
+2. If specified key is a right side border or box border, print " key |" format
+3. If specified key is neither of the two aforementioned entries and just a typical key, print "key " (noting the space after key)
 
 `print_board`
+1. Loop through each row of the board
+    1. For first row, print a row of dashes
+    2. For box border and bottom border rows, print row of dashes
+    3. For number entries, call counters_iterate to print entries of board
 
 `check`
+1. Check if either row or column of specified entry already contains the specified parameter number, returning false if number is present in either row or column
+2. Check the specific square and see if it contains the specific value from the parameter, returning false if already present
+3. If number is not in either row, column, nor square, return true
 
 `load_sudoku`
+1. First check if the specified size of sudoku to load is 0, printing error message and returning NULL if so
+2. Loop through entire stdin character by character
+    1. If the total number of values loaded is larger than specified size limit, set a bool that tracks valid format to false
+    2. If any characters are alphabetical, setting a bool that tracks valid format to false
+    3. If the current character is not the end of the line
+        1. If the current character is a digit (0-9)
+            1. If the previous character is also a digit, but the size of the sudoku is less than a 16x16, set a bool that tracks valid format to false
+            2. Convert the current character to an int
+            3. If the column or row amount exceeds size, set a bool that tracks valid format to false
+        2. Else if the previous character is a valid digit and current character is a space
+            1. If the format of sudoku is still valid
+                1. Insert the digit into the board at specific location
+                2. Increment total number of values loaded
+            2. Increment column count 
+        3. Set the previous stored character variable to the current character
+    4. If at the end of the row reading from stdin
+        1. Increment row by one if the column is equal to size
+        2. Reassign the previous character value to a NULL character
+        3. Reassign the column value to 0
+3. If the total number of inserted values is not equal to the expected total number of values, set a bool that tracks valid format to false
+4. Error check based on specific valid format bool
+    1. If error, print error message
+    2. Delete sudoku board
+    3. Return NULL
+5. If no errors, return sudoku board
+
 
 `save_solution`
+1. Loop through entire board, retrieving the values within board by calling get_number
+2. Call counters_set to insert the values into the board struct, ending when fully saved the solution board to the board struct
 
 `copy_board`
+1. Create a new board struct
+2. Loop through the original board and get all numbers from the original board, inserting to the copy board
+3. Return the copy board
 
 `print_solution`
+1. Loop through the solution counters array within the board struct row by row
+    1. If the row is either the top border or a subsequent bottom or box border, print a row of dashes
+    2. Otherwise, iterate through row and print the solution values
 
 `empty_board`
+1. Loop through the entire board
+    1. Replace or insert every entry in the board with 0
 
 
 ## Pseudocode for `make.c`

@@ -101,7 +101,7 @@ bool full_board(board_t *board, int *row, int *column){
     return true;
 }
 
-/**************** fprint_help() ****************/
+/**************** print_help() ****************/
 /* prints every cell value depending on its position*/
 void print_help(void *arg, const int key, const int count){
     board_t *board = arg;
@@ -204,7 +204,6 @@ board_t *load_sudoku(FILE *fp, int size){
                     valid_double_digit = false;
                     valid_format = false;
                 }
-                totalValues++; // incrementing value count (eventually checking if precisely 81)
                 digit = currValue - '0'; // if not double-digit, convert digit to int
 
                 if (column > size || row > size){ // error checking: if number of columns or rows exceeds the size x size dimensions, invalid sudoku
@@ -216,6 +215,7 @@ board_t *load_sudoku(FILE *fp, int size){
             else if (isdigit(prevValue) && isspace(currValue)){ // represents a valid digit
                 if (valid_format){
                     insert_number(board, row, column, digit); // inserting previous value into board
+                    totalValues++; // incrementing value count (eventually checking if precisely = size^2)
                 }
                 column++; // tracking number of columns
             }
