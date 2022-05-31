@@ -27,9 +27,13 @@ $(LLIBS):
 
 PHONY:  clean
 
+ec_test: ec_testing.sh
+	bash ec_testing.sh
+
 # clean all makefile made files and clean libraries
 clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -rf *~ *.o *.out
 	rm -f $(PROG)
+	rm -rf *.txt
 	make -sC sudokulib clean

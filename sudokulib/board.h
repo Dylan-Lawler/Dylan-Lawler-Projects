@@ -44,6 +44,13 @@ void insert_number(board_t *board, int row, int column, int number);
 */
 bool full_board(board_t *board, int* row, int *column);
 
+/**************** is_empty ****************/
+/* Purpose: Check if board is empty
+ * Input:   A board struct
+ * Output:  True if board is empty, False otherwise
+*/
+bool is_empty(board_t *board);
+
 /**************** print_board ****************/
 /* Purpose: Print Sudoku board
  * Input:   Board to be printed

@@ -47,7 +47,6 @@ static void parse_args(const int argc, char *argv[], char **mode)
         else {
             size = atoi(argv[2]);
         }
-        printf("Unique %d x %d Sudoku Board:\n", size, size);
         board_t *board = board_new(size);
         make_puzzle(board, 0, 0);
         clear_spaces(board, (size*size)/2);
