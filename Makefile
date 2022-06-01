@@ -19,6 +19,7 @@ CC = gcc
 
 $(PROG): $(OBJS) $(LLIBS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
+	make -sC testing
 
 # make libraries
 $(LLIBS):
@@ -29,7 +30,7 @@ PHONY: test clean
 # clean all makefile made files and clean libraries
 
 test: 
-	bash testing/testing.sh &> testing.out
+	bash testing/testing.sh &> testing/testing.out
 
 clean:
 	rm -rf *.dSYM  # MacOS debugger info

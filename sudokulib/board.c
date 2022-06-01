@@ -174,7 +174,6 @@ board_t *load_sudoku(FILE *fp, int size){
         fprintf(stderr, "Sudoku is of invalid size. Please input a sudoku of proper dimensions (e.g. 9x9, 16x16).\n");
         return NULL;
     }
-    
     board_t *board = assertp(board_new(size), "new board");
     char currValue;
     char prevValue = '\0';
@@ -213,7 +212,7 @@ board_t *load_sudoku(FILE *fp, int size){
             }
 
             else if (isdigit(prevValue) && isspace(currValue)){ // represents a valid digit
-                if (valid_format){
+                if (valid_format == true && row < size){
                     insert_number(board, row, column, digit); // inserting previous value into board
                     totalValues++; // incrementing value count (eventually checking if precisely = size^2)
                 }

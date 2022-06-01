@@ -36,13 +36,18 @@ echo "Testing sudoku solve mode with a board with a number out of range"
 echo -e "\n"
 
 # TEST 7: solve mode with empty file input
-echo "Testing sudoku solve mode with a board with a number out of range"
+echo "Testing sudoku solve mode with empty file input"
 ./sudoku solve < testing/emptyboard
+echo -e "\n"
+
+# TEST 7: solve mode with valid board input
+echo "Testing sudoku solve mode with valid board"
+./sudoku solve < testing/validboard
 echo -e "\n"
 
 # TEST 8: fuzztest make and solve with 10 boards
 echo "Fuzz testing make and solve modules"
-./fuzz 10
+testing/fuzz 10
 echo -e "\n"
 
 
